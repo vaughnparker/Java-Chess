@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.params=boardToSearch
+comment0.target=java.lang.String\ possibleMoves(BoardState)
+comment0.text=static\ char[][]\ chessBoard\ \=\ {\r\n\ \ \ \ {'r',\ 'n',\ 'b',\ 'q',\ 'k',\ 'b',\ 'n',\ 'r'},\r\n\ \ \ \ {'p',\ 'p',\ 'p',\ 'p',\ 'p',\ 'p',\ 'p',\ 'p'},\r\n\ \ \ \ {'\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ '},\r\n\ \ \ \ {'\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ '},\r\n\ \ \ \ {'\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ '},\r\n\ \ \ \ {'\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ '},\r\n\ \ \ \ {'P',\ 'P',\ 'P',\ 'P',\ 'P',\ 'P',\ 'P',\ 'P'},\r\n\ \ \ \ {'R',\ 'N',\ 'B',\ 'Q',\ 'K',\ 'B',\ 'N',\ 'R'},\r\n\ \ \ \ };\r\n\ \ \ \ \r\n\ \ \ \ /*static\ char[][]\ chessBoard\ \=\ {\r\n\ \ \ \ {'r',\ 'n',\ 'b',\ 'q',\ 'k',\ 'b',\ 'n',\ 'r'},\r\n\ \ \ \ {'p',\ 'p',\ 'p',\ 'p',\ 'p',\ 'p',\ 'p',\ 'p'},\r\n\ \ \ \ {'\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ '},\r\n\ \ \ \ {'\ ',\ '\ ',\ '\ ',\ '\ ',\ 'R',\ '\ ',\ '\ ',\ '\ '},\r\n\ \ \ \ {'\ ',\ 'r',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ '},\r\n\ \ \ \ {'\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ ',\ '\ '},\r\n\ \ \ \ {'P',\ 'P',\ 'P',\ 'P',\ 'P',\ 'P',\ 'P',\ 'P'},\r\n\ \ \ \ {'R',\ 'N',\ 'B',\ 'Q',\ 'K',\ 'B',\ 'N',\ 'R'},\r\n};
+comment1.params=boardToSearch\ yCoord\ xCoord\ yDir\ xDir
+comment1.target=java.lang.String\ possibleMovesInDirection(BoardState,\ int,\ int,\ int,\ int)
+comment2.params=boardToSearch\ yCoord\ xCoord
+comment2.target=java.lang.String\ possibleR(BoardState,\ int,\ int)
+numComments=3
