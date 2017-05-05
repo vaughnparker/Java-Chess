@@ -51,14 +51,14 @@ public class MoveFinder
                     /*case 'P': list+=possibleP(boardToSearch, y, x);
                         break;
                     case 'N': list+=possibleN(boardToSearch, y, x);
-                        break;
-                    case 'B': list+=possibleB(boardToSearch, y, x);
                         break;*/
+                    case 'B': list+=possibleB(boardToSearch, y, x);
+                        break;
                     case 'R': list+=possibleR(boardToSearch, y, x);
                         break;
-                    /*case 'Q': list+=possibleQ(boardToSearch, y, x);
+                    case 'Q': list+=possibleQ(boardToSearch, y, x);
                         break;
-                    case 'K': list+=possibleK(boardToSearch, y, x);
+                    /*case 'K': list+=possibleK(boardToSearch, y, x);
                         break;*/
                 }
             }
@@ -68,14 +68,14 @@ public class MoveFinder
                     /*case 'p': list+=possibleP(boardToSearch, y, x);
                         break;
                     case 'n': list+=possibleN(boardToSearch, y, x);
-                        break;
-                    case 'b': list+=possibleB(boardToSearch, y, x);
                         break;*/
+                    case 'b': list+=possibleB(boardToSearch, y, x);
+                        break;
                     case 'r': list+=possibleR(boardToSearch, y, x);
                         break;
-                    /*case 'q': list+=possibleQ(boardToSearch, y, x);
+                    case 'q': list+=possibleQ(boardToSearch, y, x);
                         break;
-                    case 'k': list+=possibleK(boardToSearch, y, x);
+                    /*case 'k': list+=possibleK(boardToSearch, y, x);
                         break;*/
                 }
             }
@@ -181,7 +181,31 @@ public class MoveFinder
         // this could compactify code for ROOK, BISHOP, and QUEEN piece types
     }
 
+    public static String possibleB(BoardState boardToSearch, int yCoord, int xCoord) {
+        char[][] position = boardToSearch.getPosition();
 
+        String list = "";
+
+        list += possibleMovesInDirection(boardToSearch, yCoord, xCoord, -1, -1); //checks up-left diagonal
+        list += possibleMovesInDirection(boardToSearch, yCoord, xCoord, -1, 1); //checks up-right diagonal
+        list += possibleMovesInDirection(boardToSearch, yCoord, xCoord, 1, -1); //checks down-left diagonal
+        list += possibleMovesInDirection(boardToSearch, yCoord, xCoord, 1, 1); //checks down-right diagonal
+
+        return list;
+    }
+
+    public static String possibleQ(BoardState boardToSearch, int yCoord, int xCoord) {
+        char[][] position = boardToSearch.getPosition();
+
+        String list = "";
+
+        list += possibleR(boardToSearch, yCoord, xCoord); //checks rook moves
+        list += possibleB(boardToSearch, yCoord, xCoord); //checks bishop moves
+        // this is a neat solution as a queen is really just a "compound piece"
+        // I could use this exact type of method combination to implement fairy chess pieces
+
+        return list;
+    }
 
     
 }
