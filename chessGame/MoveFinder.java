@@ -49,9 +49,9 @@ public class MoveFinder
                 // if it is WHITE's move
                 switch (position[y][x]) { //.toUpperCase??
                     /*case 'P': list+=possibleP(boardToSearch, y, x);
-                        break;
-                    case 'N': list+=possibleN(boardToSearch, y, x);
                         break;*/
+                    case 'N': list+=possibleN(boardToSearch, y, x);
+                        break;
                     case 'B': list+=possibleB(boardToSearch, y, x);
                         break;
                     case 'R': list+=possibleR(boardToSearch, y, x);
@@ -66,9 +66,9 @@ public class MoveFinder
                 // if it is black's move
                 switch (position[y][x]) { //.toUpperCase??
                     /*case 'p': list+=possibleP(boardToSearch, y, x);
-                        break;
-                    case 'n': list+=possibleN(boardToSearch, y, x);
                         break;*/
+                    case 'n': list+=possibleN(boardToSearch, y, x);
+                        break;
                     case 'b': list+=possibleB(boardToSearch, y, x);
                         break;
                     case 'r': list+=possibleR(boardToSearch, y, x);
@@ -83,6 +83,7 @@ public class MoveFinder
 
         return list; //x1, y1, x2, y2, captured piece
     }
+
 
     public static String possibleMovesInDirection(BoardState boardToSearch, int yCoord, int xCoord, int yDir, int xDir) {
         String list = "";
@@ -102,7 +103,7 @@ public class MoveFinder
                 // if that square is empty then add it and repeat
             }
             else if (Character.isUpperCase(position[yToCheck][xToCheck]) != side) {
-                list = list + xCoord + yCoord + xToCheck + yToCheck + " ";
+                list = list + xCoord + yCoord + xToCheck + yToCheck + position[yToCheck][xToCheck];
                 return list;
                 // if that square has an enemy piece then add it and return list
             }
@@ -195,7 +196,7 @@ public class MoveFinder
     }
 
     public static String possibleQ(BoardState boardToSearch, int yCoord, int xCoord) {
-        char[][] position = boardToSearch.getPosition();
+        //char[][] position = boardToSearch.getPosition();
 
         String list = "";
 
@@ -207,5 +208,45 @@ public class MoveFinder
         return list;
     }
 
-    
+    public static boolean isValidSquare(BoardState boardToSearch, int yCoord, int xCoord) {
+        char[][] position = boardToSearch.getPosition();
+        boolean side = boardToSearch.getSide();
+
+        return !((yCoord < 0 || yCoord > 7 || xCoord < 0 || xCoord > 7) || ((position[yCoord][xCoord] != ' ') && Character.isUpperCase(position[yCoord][xCoord]) == side));
+    }
+
+    public static String moveToSquare(BoardState boardToSearch, int yCoord, int xCoord, int yToAdd, int xToAdd) {
+        char[][] position = boardToSearch.getPosition();
+
+        int yToCheck = yCoord + yToAdd;
+        int xToCheck = xCoord + xToAdd;
+
+        if(isValidSquare(boardToSearch, yToCheck, xToCheck)) {
+            return "" + xCoord + yCoord + xToCheck + yToCheck + position[yToCheck][xToCheck];
+        }
+        else {
+            return "";
+        }
+    }
+
+    public static String possibleN(BoardState boardToSearch, int yCoord, int xCoord) {
+        char[][] position = boardToSearch.getPosition();
+        boolean side = boardToSearch.getSide();
+
+        String list = "";
+
+        list += moveToSquare(boardToSearch, yCoord, xCoord, -2, -1);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, -2, 1);
+
+        list += moveToSquare(boardToSearch, yCoord, xCoord, -1, 2);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 1, 2);
+
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 2, 1);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 2, -1);
+
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 1, -2);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, -1, -2);
+
+        return list;
+    }
 }
