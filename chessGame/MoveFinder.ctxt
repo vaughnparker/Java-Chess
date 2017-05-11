@@ -16,4 +16,6 @@ comment6.params=boardToSearch\ yCoord\ xCoord\ yToAdd\ xToAdd
 comment6.target=java.lang.String\ moveToSquare(BoardState,\ int,\ int,\ int,\ int)
 comment7.params=boardToSearch\ yCoord\ xCoord
 comment7.target=java.lang.String\ possibleN(BoardState,\ int,\ int)
-numComments=8
+comment8.params=boardToSearch\ yCoord\ xCoord
+comment8.target=java.lang.String\ possibleP(BoardState,\ int,\ int)
+numComments=9

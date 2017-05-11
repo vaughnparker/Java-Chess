@@ -48,8 +48,8 @@ public class MoveFinder
             if(sideToMove) {
                 // if it is WHITE's move
                 switch (position[y][x]) { //.toUpperCase??
-                    /*case 'P': list+=possibleP(boardToSearch, y, x);
-                        break;*/
+                    case 'P': list+=possibleP(boardToSearch, y, x);
+                        break;
                     case 'N': list+=possibleN(boardToSearch, y, x);
                         break;
                     case 'B': list+=possibleB(boardToSearch, y, x);
@@ -65,8 +65,8 @@ public class MoveFinder
             else {
                 // if it is black's move
                 switch (position[y][x]) { //.toUpperCase??
-                    /*case 'p': list+=possibleP(boardToSearch, y, x);
-                        break;*/
+                    case 'p': list+=possibleP(boardToSearch, y, x);
+                        break;
                     case 'n': list+=possibleN(boardToSearch, y, x);
                         break;
                     case 'b': list+=possibleB(boardToSearch, y, x);
@@ -246,6 +246,29 @@ public class MoveFinder
 
         list += moveToSquare(boardToSearch, yCoord, xCoord, 1, -2);
         list += moveToSquare(boardToSearch, yCoord, xCoord, -1, -2);
+
+        return list;
+    }
+
+    public static String possibleP(BoardState boardToSearch, int yCoord, int xCoord) {
+        char[][] position = boardToSearch.getPosition();
+        boolean side = boardToSearch.getSide();
+        int pawnDirection = side ? -1 : 1;
+
+        String list = "";
+
+        //movement type A: regular 1 square forward
+        if (isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord) && position[yCoord + pawnDirection][xCoord] == ' ') {
+            list = list + xCoord + yCoord +  xCoord + (yCoord + pawnDirection) + " ";
+        }
+
+        //movement type B: starting 2 squares forward
+
+        //movement type C: diagonal capture
+
+        //movement type D: promotion
+
+        //movement type E: en passant
 
         return list;
     }
