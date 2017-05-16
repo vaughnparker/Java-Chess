@@ -31,6 +31,10 @@ public class MoveFinder
 
     //capital letters are white
     
+    public MoveFinder() {
+        
+    }
+
     public static String possibleMoves(BoardState boardToSearch) {
         String list = "";
         char[][] position = boardToSearch.getPosition();
@@ -254,7 +258,8 @@ public class MoveFinder
         char[][] position = boardToSearch.getPosition();
         boolean side = boardToSearch.getSide();
         int pawnDirection = side ? -1 : 1;
-
+        int promotionRank = side ? 0 : 7;
+        
         String list = "";
 
         //movement type A: regular 1 square forward
@@ -263,12 +268,49 @@ public class MoveFinder
         }
 
         //movement type B: starting 2 squares forward
-
+        if(yCoord == 7 -  promotionRank + pawnDirection) {
+            //System.out.println("double space working");
+            if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + pawnDirection][xCoord] == ' ') {
+                list = list + xCoord + yCoord +  xCoord + (yCoord + (2 * pawnDirection)) + " ";
+            }
+        }
+        
         //movement type C: diagonal capture
+        if(isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord + 1)
+        && (Character.isUpperCase(position[yCoord + pawnDirection][xCoord + 1]) != side)
+        && (position[yCoord + pawnDirection][xCoord + 1] != ' ')) {
+            list = list + xCoord + yCoord +  (xCoord + 1) + (yCoord + pawnDirection) + position[yCoord + pawnDirection][xCoord + 1];
+        }
+
+        if(isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord - 1)
+        && (Character.isUpperCase(position[yCoord + pawnDirection][xCoord - 1]) != side)
+        && (position[yCoord + pawnDirection][xCoord - 1] != ' ')) {
+            list = list + xCoord + yCoord +  (xCoord - 1) + (yCoord + pawnDirection) + position[yCoord + pawnDirection][xCoord - 1];
+        }
 
         //movement type D: promotion
 
         //movement type E: en passant
+
+        return list;
+    }
+
+    public static String possibleK(BoardState boardToSearch, int yCoord, int xCoord) {
+        char[][] position = boardToSearch.getPosition();
+        boolean side = boardToSearch.getSide();
+
+        String list = "";
+
+        list += moveToSquare(boardToSearch, yCoord, xCoord, -1, -1);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, -1, 0);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, -1, 1);
+
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 0, -1);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 0, 1);
+        
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 1, -1);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 1, 0);
+        list += moveToSquare(boardToSearch, yCoord, xCoord, 1, 1);
 
         return list;
     }
