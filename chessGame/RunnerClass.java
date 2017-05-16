@@ -5,7 +5,7 @@ public class RunnerClass
         char[][] chessBoard = {
             {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
             {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
-            {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', 'P', ' ', ' ', ' ', ' '},  
             {' ', ' ', ' ', ' ', 'N', ' ', ' ', ' '},
             {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
             {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -25,4 +25,4 @@ public class RunnerClass
         
         System.out.println(ai.possibleMoves(gameBoard));
     }
-}
+}   
