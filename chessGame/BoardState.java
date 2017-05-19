@@ -49,12 +49,41 @@ public class BoardState
             return "Invalid move, move must be 5 characters long";
         }
         
+        int pawnDirection = getSide() ? -1 : 1;
+        int promotionRank = getSide() ? 0 : 7;
+        
+        String typeOfMove = "Standard";
         
         int oldX = Character.getNumericValue(move.charAt(0));
         int oldY = Character.getNumericValue(move.charAt(1));
         int newX = Character.getNumericValue(move.charAt(2));
-        int newY = Character.getNumericValue(move.charAt(3));
+        
+        int newY;
+        char promotedPiece = 'E'; // E for error
+        
         char capturedPiece = move.charAt(4);
+        
+        //if its a pawn promotion
+        if (move.charAt(3) == 'Q' || move.charAt(3) == 'R' || move.charAt(3) == 'B' || move.charAt(3) == 'N'
+           || move.charAt(3) == 'q' || move.charAt(3) == 'r' || move.charAt(3) == 'b' || move.charAt(3) == 'n')
+        {
+            if (oldY != promotionRank - pawnDirection) {
+                return "Invalid move, pawn must be on 2nd or 7th rank to promote";
+            }
+            
+            
+            
+            newY = promotionRank;
+            
+            promotedPiece = move.charAt(3);
+            typeOfMove = "Promotion";
+        }
+        else {
+            newY = Character.getNumericValue(move.charAt(3));
+        }
+        
+        
+        
         
         if ( (oldX < 0 || oldX > 7) || (oldY < 0 || oldY > 7) || (newX < 0 || newX > 7) || (newY < 0 || newY > 7) ) {
             return "Invalid move, move coordinates must be in range (0 <= coordinate <= 7)";
@@ -63,11 +92,16 @@ public class BoardState
             return "Invalid move, there is no " + capturedPiece + " at coordinates " + newX + ", " + newY;
         }
         
+        if (typeOfMove.equals("Standard")) {
+            savedPosition[newY][newX] = savedPosition[oldY][newX];
+            savedPosition[oldY][newX] = ' ';
+        }
+        else if (typeOfMove.equals("Promotion")) {
+            savedPosition[newY][newX] = promotedPiece;
+            savedPosition[oldY][newX] = ' ';
+        }
         
-        savedPosition[newY][newX] = savedPosition[oldY][newX];
-        savedPosition[oldY][newX] = ' ';
-        
-        System.out.println("TESTOZESTO " + savedPosition[newX][newY]);
+        //System.out.println("TESTOZESTO " + savedPosition[newX][newY]);
         return this.toString();
         
         

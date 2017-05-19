@@ -262,33 +262,63 @@ public class MoveFinder
         
         String list = "";
 
-        //movement type A: regular 1 square forward
-        if (isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord) && position[yCoord + pawnDirection][xCoord] == ' ') {
-            list = list + xCoord + yCoord +  xCoord + (yCoord + pawnDirection) + " ";
-        }
-
-        //movement type B: starting 2 squares forward
-        if(yCoord == 7 -  promotionRank + pawnDirection) {
-            //System.out.println("double space working");
-            if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + pawnDirection][xCoord] == ' ') {
-                list = list + xCoord + yCoord +  xCoord + (yCoord + (2 * pawnDirection)) + " ";
+        //if (yCoord != promotionRank - pawnDirection) {
+            //movement type A: regular 1 square forward
+            if (isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord) && position[yCoord + pawnDirection][xCoord] == ' ') {
+                list = list + xCoord + yCoord +  xCoord + (yCoord + pawnDirection) + " ";
             }
-        }
+    
+            //movement type B: starting 2 squares forward
+            if (yCoord == 7 -  promotionRank + pawnDirection) {
+                //System.out.println("double space working");
+                if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + pawnDirection][xCoord] == ' ') {
+                    list = list + xCoord + yCoord +  xCoord + (yCoord + (2 * pawnDirection)) + " ";
+                }
+            }
+            
+            //movement type C: diagonal capture
+            if (isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord + 1)
+            && (Character.isUpperCase(position[yCoord + pawnDirection][xCoord + 1]) != side)
+            && (position[yCoord + pawnDirection][xCoord + 1] != ' ')) {
+                list = list + xCoord + yCoord +  (xCoord + 1) + (yCoord + pawnDirection) + position[yCoord + pawnDirection][xCoord + 1];
+            }
+    
+            if (isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord - 1)
+            && (Character.isUpperCase(position[yCoord + pawnDirection][xCoord - 1]) != side)
+            && (position[yCoord + pawnDirection][xCoord - 1] != ' ')) {
+                list = list + xCoord + yCoord +  (xCoord - 1) + (yCoord + pawnDirection) + position[yCoord + pawnDirection][xCoord - 1];
+            }
+        //}
+        //else {
+            //movement type D: promotion
+            
+            for (int i = 0; i < list.length(); i += 5) {
+                
+                String moveToEdit = list.substring(i, i+5); //print stuff if it doesnt work
+                
+                if (Character.getNumericValue(moveToEdit.charAt(3)) == promotionRank) {
+                    // this turns moves that look like "4140 " into "414Q " and "7667N" into "766Nq"
+                    
+                    if (side) {
+                        list = list.substring(0, i) + moveToEdit.substring(0, 3) + "Q" + moveToEdit.substring(4)
+                        + moveToEdit.substring(0, 3) + "R" + moveToEdit.substring(4)
+                        + moveToEdit.substring(0, 3) + "B" + moveToEdit.substring(4)
+                        + moveToEdit.substring(0, 3) + "N" + moveToEdit.substring(4)
+                        + list.substring(i+5);
+                    }
+                    else {
+                       list = list.substring(0, i) + moveToEdit.substring(0, 3) + "q" + moveToEdit.substring(4)
+                        + moveToEdit.substring(0, 3) + "r" + moveToEdit.substring(4)
+                        + moveToEdit.substring(0, 3) + "b" + moveToEdit.substring(4)
+                        + moveToEdit.substring(0, 3) + "n" + moveToEdit.substring(4)
+                        + list.substring(i+5);
+                    }
+                }
+            }
         
-        //movement type C: diagonal capture
-        if(isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord + 1)
-        && (Character.isUpperCase(position[yCoord + pawnDirection][xCoord + 1]) != side)
-        && (position[yCoord + pawnDirection][xCoord + 1] != ' ')) {
-            list = list + xCoord + yCoord +  (xCoord + 1) + (yCoord + pawnDirection) + position[yCoord + pawnDirection][xCoord + 1];
-        }
-
-        if(isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord - 1)
-        && (Character.isUpperCase(position[yCoord + pawnDirection][xCoord - 1]) != side)
-        && (position[yCoord + pawnDirection][xCoord - 1] != ' ')) {
-            list = list + xCoord + yCoord +  (xCoord - 1) + (yCoord + pawnDirection) + position[yCoord + pawnDirection][xCoord - 1];
-        }
-
-        //movement type D: promotion
+            
+        
+        //}
 
         //movement type E: en passant
 
