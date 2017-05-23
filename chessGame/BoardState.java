@@ -21,7 +21,7 @@ public class BoardState
     
     public BoardState(char[][] inputBoard) {
         savedPosition = inputBoard;
-        sideToMove = true;
+        sideToMove = true; 
     }
 
     public BoardState(char[][] inputBoard, boolean inputSide) {
@@ -43,10 +43,10 @@ public class BoardState
     
     
     
-    public String makeMove(String move) {
+    public BoardState makeMove(String move) {
         
         if (move.length() != 5) {
-            return "Invalid move, move must be 5 characters long";
+            System.out.println( "Invalid move, move must be 5 characters long";
         }
         
         int pawnDirection = getSide() ? -1 : 1;
@@ -68,7 +68,8 @@ public class BoardState
            || move.charAt(3) == 'q' || move.charAt(3) == 'r' || move.charAt(3) == 'b' || move.charAt(3) == 'n')
         {
             if (oldY != promotionRank - pawnDirection) {
-                return "Invalid move, pawn must be on 2nd or 7th rank to promote";
+                System.out.println("Invalid move, pawn must be on 2nd or 7th rank to promote")
+                return this;
             }
             
             
@@ -86,10 +87,12 @@ public class BoardState
         
         
         if ( (oldX < 0 || oldX > 7) || (oldY < 0 || oldY > 7) || (newX < 0 || newX > 7) || (newY < 0 || newY > 7) ) {
-            return "Invalid move, move coordinates must be in range (0 <= coordinate <= 7)";
+            System.out.println("Invalid move, move coordinates must be in range (0 <= coordinate <= 7)");
+            return this;
         }
         if (capturedPiece != savedPosition[newY][newX]) {
-            return "Invalid move, there is no " + capturedPiece + " at coordinates " + newX + ", " + newY;
+            System.out.println("Invalid move, there is no " + capturedPiece + " at coordinates " + newX + ", " + newY);
+            return this;
         }
         
         if (typeOfMove.equals("Standard")) {
@@ -102,7 +105,8 @@ public class BoardState
         }
         
         //System.out.println("TESTOZESTO " + savedPosition[newX][newY]);
-        return this.toString();
+        //System.out.println(this.toString());
+        return this;
         
         
         //System.out.println("" + oldX + oldY + newX + newY);

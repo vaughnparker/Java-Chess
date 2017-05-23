@@ -1,4 +1,3 @@
-
 /**
  * Write a description of class MoveFinder here.
  * 
@@ -13,17 +12,6 @@ public class MoveFinder
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-    {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-    {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
-    };
-    
-    /*static char[][] chessBoard = {
-    {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
-    {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
-    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-    {' ', ' ', ' ', ' ', 'R', ' ', ' ', ' '},
-    {' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
     {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
     {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
@@ -147,7 +135,6 @@ public class MoveFinder
                 break; //alternatively, tempy = -1; or restructure into while loop
             }
         }
-
         // this one is for looking down
         for(int tempy = yCoord + 1; tempy <= 7; tempy++) {
             if(position[tempy][xCoord] == ' ') {
@@ -157,7 +144,6 @@ public class MoveFinder
                 break; //alternatively, tempy = -1; or restructure into while loop
             }
         }
-
         // this for loop looks left
         for(int tempx = xCoord - 1; tempx >= 0; tempx--) {
             if(position[yCoord][tempx] == ' ') {
@@ -167,7 +153,6 @@ public class MoveFinder
                 break; //alternatively, tempx = -1; or restructure into while loop
             }
         }
-
         // and this one looks right (towards the h file)
         for(int tempx = xCoord + 1; tempx <= 7; tempx++) {
             if(position[yCoord][tempx] == ' ') {
@@ -344,4 +329,21 @@ public class MoveFinder
 
         return list;
     }
+
+    public static void removeSelfMates(BoardState boardToSearch, String list) {
+
+        for (int i = 0; i < list.length(); i += 5) {
+            Board tempKingBoard = new Board(boardToSearch.getPosition(), boardToSearch.getSide())
+            
+            tempKingBoard.makeMove(list.substring(i, i+5));
+
+            
+        }
+
+    }
+
+    public static boolean doesMoveTakeKing(BoardState boardToSearch, String list) {
+        return ()
+    }
+
 }
