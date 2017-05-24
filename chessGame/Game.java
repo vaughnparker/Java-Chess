@@ -1,5 +1,5 @@
 public class Game {
-
+/*
     BoardState gameBoard;
     char[][] position;
     boolean side;
@@ -32,5 +32,5 @@ public class Game {
 
 
     }
-
+*/
 }

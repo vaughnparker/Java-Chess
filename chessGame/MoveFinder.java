@@ -6,21 +6,19 @@
  */
 public class MoveFinder
 {
-    /*static char[][] chessBoard = {
-    {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
-    {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
-    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-    {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-    {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
-    };*/
 
     //capital letters are white
     
-    public MoveFinder() {
+    /*public MoveFinder() {
         
+    }*/
+
+    public static String legalMoves(BoardState boardToSearch) {
+
+        String possibleList = MoveFinder.possibleMoves(boardToSearch);
+        String legalList = MoveFinder.removeSelfChecks(boardToSearch, possibleList);
+
+        return legalList;
     }
 
     public static String possibleMoves(BoardState boardToSearch) {
@@ -50,8 +48,8 @@ public class MoveFinder
                         break;
                     case 'Q': list+=possibleQ(boardToSearch, y, x);
                         break;
-                    /*case 'K': list+=possibleK(boardToSearch, y, x);
-                        break;*/
+                    case 'K': list+=possibleK(boardToSearch, y, x);
+                        break;
                 }
             }
             else {
@@ -67,8 +65,8 @@ public class MoveFinder
                         break;
                     case 'q': list+=possibleQ(boardToSearch, y, x);
                         break;
-                    /*case 'k': list+=possibleK(boardToSearch, y, x);
-                        break;*/
+                    case 'k': list+=possibleK(boardToSearch, y, x);
+                        break;
                 }
             }
         }
@@ -280,6 +278,7 @@ public class MoveFinder
             for (int i = 0; i < list.length(); i += 5) {
                 
                 String moveToEdit = list.substring(i, i+5); //print stuff if it doesnt work
+                //THIS COULD CAUSE AN OOB BABY ERROR LATER SO I GOTTA FIX THIS SUBSTRING
                 
                 if (Character.getNumericValue(moveToEdit.charAt(3)) == promotionRank) {
                     // this turns moves that look like "4140 " into "414Q " and "7667N" into "766Nq"
@@ -330,20 +329,44 @@ public class MoveFinder
         return list;
     }
 
-    public static void removeSelfMates(BoardState boardToSearch, String list) {
+    public static String removeSelfChecks(BoardState boardToSearch, String list) {
 
-        for (int i = 0; i < list.length(); i += 5) {
-            Board tempKingBoard = new Board(boardToSearch.getPosition(), boardToSearch.getSide())
-            
-            tempKingBoard.makeMove(list.substring(i, i+5));
+        String shortenedList = "";
 
+        for (int i = 5; i <= list.length(); i += 5) { //should this be < or <= ? fix this later
             
+            //BoardState tempKingBoard = new BoardState(boardToSearch.getPosition(), boardToSearch.getSide());
+            //this is a shallow copy, doesn't work!
+
+            char[][] tempKingPosition = new char[8][8];
+
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    tempKingPosition[row][col] = boardToSearch.getPosition()[row][col];
+                }
+            }
+
+            //char[][] tempKingPosition = boardToSearch.getPosition().clone();
+
+            BoardState tempKingBoard = new BoardState(tempKingPosition, boardToSearch.getSide());
+            //this one is a deep copy, let's see if this works
+
+
+            String tempMove = list.substring(i-5, i);
+            tempKingBoard.makeMove(tempMove);
+            
+            //System.out.println("WTF my guy gameBoard\n" + boardToSearch);
+            // this was for the shallow copy error
+
+            if (!tempKingBoard.isKingInCheck()) {
+                shortenedList += tempMove;
+            }
+
         }
 
-    }
 
-    public static boolean doesMoveTakeKing(BoardState boardToSearch, String list) {
-        return ()
-    }
+        return shortenedList;
 
+
+    }
 }

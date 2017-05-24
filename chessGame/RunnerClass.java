@@ -6,31 +6,42 @@ public class RunnerClass
         
         Scanner playerInput = new Scanner(System.in);
 
-        char[][] testingPosition = {
-            {'r', 'n', 'b', 'q', 'k', 'b', 'P', 'r'},
-            {'p', 'p', 'P', 'p', 'p', 'p', 'P', 'p'},
+        /*char[][] testingPosition = {
+            {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
+            {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
             {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-            {' ', ' ', ' ', ' ', 'N', ' ', ' ', ' '},
+            {' ', ' ', 'K', ' ', 'N', ' ', ' ', ' '},
             {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
             {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
             {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-            {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
+            {'R', 'N', 'B', 'Q', ' ', 'B', 'N', 'R'},
             };
-        BoardState gameBoard = new BoardState(testingPosition, true);
-        //BoardState gameBoard = new BoardState();
-        char[][] currentPosition = gameBoard.getPosition();
+        BoardState gameBoard = new BoardState(testingPosition, true);*/
+
+        BoardState gameBoard = new BoardState();
+        //char[][] currentPosition = gameBoard.getPosition();
+
         System.out.println(gameBoard);
         
-        MoveFinder ai = new MoveFinder();
-        System.out.println(ai.possibleMoves(gameBoard));
+        //MoveFinder runnerFinder = new MoveFinder();
+        System.out.println(MoveFinder.possibleMoves(gameBoard));
+        System.out.println(gameBoard);
+        
+        System.out.println(MoveFinder.legalMoves(gameBoard));
+        System.out.println(gameBoard);
         
         
         
         
-        System.out.println();
+        /*System.out.println();
         System.out.println(gameBoard.makeMove("4644 "));
         
         System.out.println();
-        System.out.println(gameBoard.makeMove("211Qn"));
+        System.out.println(gameBoard.makeMove("211Qn"));*/
+
+
+
+
+
     }
 }

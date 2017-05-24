@@ -14,6 +14,9 @@ public class BoardState
             {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
             {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'},
         };
+
+        //capital letters are WHITE
+        //lowercase letters are black
         
         savedPosition = emptyBoard;
         sideToMove = true; // true = WHITE, false = black
@@ -46,11 +49,11 @@ public class BoardState
     public BoardState makeMove(String move) {
         
         if (move.length() != 5) {
-            System.out.println( "Invalid move, move must be 5 characters long";
+            System.out.println("Invalid move, move must be 5 characters long");
         }
         
-        int pawnDirection = getSide() ? -1 : 1;
-        int promotionRank = getSide() ? 0 : 7;
+        int pawnDirection = (sideToMove ? -1 : 1);
+        int promotionRank = (sideToMove ? 0 : 7);
         
         String typeOfMove = "Standard";
         
@@ -68,7 +71,7 @@ public class BoardState
            || move.charAt(3) == 'q' || move.charAt(3) == 'r' || move.charAt(3) == 'b' || move.charAt(3) == 'n')
         {
             if (oldY != promotionRank - pawnDirection) {
-                System.out.println("Invalid move, pawn must be on 2nd or 7th rank to promote")
+                System.out.println("Invalid move, pawn must be on 2nd or 7th rank to promote");
                 return this;
             }
             
@@ -96,16 +99,18 @@ public class BoardState
         }
         
         if (typeOfMove.equals("Standard")) {
-            savedPosition[newY][newX] = savedPosition[oldY][newX];
-            savedPosition[oldY][newX] = ' ';
+            savedPosition[newY][newX] = savedPosition[oldY][oldX];
+            savedPosition[oldY][oldX] = ' ';
         }
         else if (typeOfMove.equals("Promotion")) {
             savedPosition[newY][newX] = promotedPiece;
-            savedPosition[oldY][newX] = ' ';
+            savedPosition[oldY][oldX] = ' ';
         }
         
         //System.out.println("TESTOZESTO " + savedPosition[newX][newY]);
         //System.out.println(this.toString());
+
+        sideToMove = !sideToMove; //this is SUPER IMPORTANT, changes whose turn it is
         return this;
         
         
@@ -126,5 +131,18 @@ public class BoardState
             }
             
         return textBoard;
+    }
+
+    public boolean isKingInCheck() {
+        boolean side = this.getSide();
+
+        String listOfMoves = MoveFinder.possibleMoves(this);
+
+        String kingString = (side ? "k" : "K");
+
+        //System.out.println(listOfMoves.indexOf(kingString) != -1);
+        return (listOfMoves.indexOf(kingString) != -1);
+        // true = YES, the king IS in check
+        // false = NO, the king is NOT in check
     }
 }
