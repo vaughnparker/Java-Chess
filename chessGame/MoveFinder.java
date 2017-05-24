@@ -358,7 +358,7 @@ public class MoveFinder
             //System.out.println("WTF my guy gameBoard\n" + boardToSearch);
             // this was for the shallow copy error
 
-            if (!tempKingBoard.isKingInCheck()) {
+            if (!tempKingBoard.isKingTakeable()) {
                 shortenedList += tempMove;
             }
 

@@ -133,7 +133,9 @@ public class BoardState
         return textBoard;
     }
 
-    public boolean isKingInCheck() {
+    public boolean isKingTakeable() {
+        // if it's WHITE's turn to move it sees whether or not the BLACK king is in check
+        // if it's BLACK's turn to move it sees whether or not the WHITE king is in check (can be taken)
         boolean side = this.getSide();
 
         String listOfMoves = MoveFinder.possibleMoves(this);
@@ -143,6 +145,59 @@ public class BoardState
         //System.out.println(listOfMoves.indexOf(kingString) != -1);
         return (listOfMoves.indexOf(kingString) != -1);
         // true = YES, the king IS in check
+        // this ONLY returns true in illigal board states, if someone makes an illigal move
         // false = NO, the king is NOT in check
+    }
+    
+    public boolean cannotMove() {
+        // returns TRUE if the player whose turn it is CAN'T MOVE
+        // returns FALSE if play continues
+        
+        String listOfMoves = MoveFinder.possibleMoves(this);
+        return (listOfMoves.length() == 0);
+    }
+    
+    public boolean returnGameState() {
+        // if it's WHITE's turn to move it sees whether or not WHITE has any moves
+        
+        // this method returns true IF AND ONLY IF there are no available moves AND if it were
+        // suddenly the opponent's turn it would be a illigal board state (because the opponent
+        // could then take side's king)
+        
+        boolean side = this.getSide();
+        
+        
+        if (this.cannotMove()) {
+            return false;
+        }
+        return true;
+    }
+    
+    public String winState() {
+        if (this.cannotMove()) { // if the player has no moves 
+            char[][] swapSidePosition = new char[8][8];
+
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    swapSidePosition[row][col] = savedPosition[row][col];
+                }
+            }
+        
+            BoardState swapSideBoard = new BoardState(swapSidePosition, !sideToMove);
+            
+            if (swapSideBoard.isKingTakeable()) {
+                //and if we make a new board
+                // where side = !side and do .isKingInCheck and it returns TRUE, meaning
+                // that the king IS in check, then its checkmate
+                //return ("Checkmate," + !side + " wins!");
+                return ("Checkmate");
+            }
+            else {
+                // it's stalemate
+                return ("Stalemate");
+            }
+        }
+        
+        return "Play continues";
     }
 }
