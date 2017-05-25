@@ -50,6 +50,7 @@ public class BoardState
         
         if (move.length() != 5) {
             System.out.println("Invalid move, move must be 5 characters long");
+            return this;
         }
         
         int pawnDirection = (sideToMove ? -1 : 1);
@@ -97,6 +98,17 @@ public class BoardState
             System.out.println("Invalid move, there is no " + capturedPiece + " at coordinates " + newX + ", " + newY);
             return this;
         }
+
+
+        // makeMove() cannot check if it's a legal move, because the legalMoves method relies on removeAllSelfChecks, which
+        // relies on the makeMove method
+        /*if (MoveFinder.legalMoves(this).indexOf(move) == -1) {
+            System.out.println("Invalid move, " + move + " is not a legal move.");
+            return this;
+        }*/
+
+
+
         
         if (typeOfMove.equals("Standard")) {
             savedPosition[newY][newX] = savedPosition[oldY][oldX];
@@ -157,21 +169,6 @@ public class BoardState
         return (listOfMoves.length() == 0);
     }
     
-    public boolean returnGameState() {
-        // if it's WHITE's turn to move it sees whether or not WHITE has any moves
-        
-        // this method returns true IF AND ONLY IF there are no available moves AND if it were
-        // suddenly the opponent's turn it would be a illigal board state (because the opponent
-        // could then take side's king)
-        
-        boolean side = this.getSide();
-        
-        
-        if (this.cannotMove()) {
-            return false;
-        }
-        return true;
-    }
     
     public String winState() {
         if (this.cannotMove()) { // if the player has no moves 

@@ -56,33 +56,55 @@ public class RunnerClass
         String player2 = playerInput.nextLine();
         
         System.out.println();
-        System.out.println("Okay, we have " + player1 + " vs. " + player2 + "!");
+        System.out.println("Okay, we have " + player1 + " vs. " + player2 + ". Begin!");
+        System.out.println(gameBoard);
         // for now let's just assume that its player vs player
         // player1 = WHITE, player2 = black
 
         boolean gameInProgress = true;
         String playerMove = "";
+        String listOfLegalMoves = "";
         
         while(gameInProgress) {
             
             boolean side = gameBoard.getSide();
+            System.out.println((side ? player1 : player2) + " to move!");
+            listOfLegalMoves = MoveFinder.legalMoves(gameBoard);
+            System.out.println(listOfLegalMoves);
+
+            
             
             playerMove = playerInput.nextLine();
-            gameBoard.makeMove(playerMove);
             
-            System.out.println(gameBoard);
-            
-            if (gameBoard.winState().equals("Checkmate")) {
+
+            if (listOfLegalMoves.indexOf(playerMove) != -1) {
+
+                gameBoard.makeMove(playerMove);
+
+                System.out.println(gameBoard);
+
+                if (gameBoard.winState().equals("Checkmate")) {
                 System.out.println("Checkmate! " + (side ? player2 : player1) + " is the winner!");
                 gameInProgress = false;
-            }
-            else if (gameBoard.winState().equals("Stalemate")) {
-                System.out.println("Stalemate! It is a draw. :(");
-                gameInProgress = false;
+                }
+                else if (gameBoard.winState().equals("Stalemate")) {
+                    System.out.println("Stalemate! It is a draw. :(");
+                    gameInProgress = false;
+                }
+                else {
+                    System.out.println("Play continues...");
+                }
+
             }
             else {
-                System.out.println("Play continues...");
+                System.out.println("Invalid move, " + playerMove + " is illigal by the rules of chess.");
+                
+                System.out.println(gameBoard);
             }
+            
+            
+            
+            
         }
 
 
