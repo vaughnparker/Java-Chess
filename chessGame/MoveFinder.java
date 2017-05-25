@@ -254,7 +254,7 @@ public class MoveFinder
             //movement type B: starting 2 squares forward
             if (yCoord == 7 -  promotionRank + pawnDirection) {
                 //System.out.println("double space working");
-                if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + pawnDirection][xCoord] == ' ') {
+                if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + (2 * pawnDirection)][xCoord] == ' ') {
                     list = list + xCoord + yCoord +  xCoord + (yCoord + (2 * pawnDirection)) + " ";
                 }
             }

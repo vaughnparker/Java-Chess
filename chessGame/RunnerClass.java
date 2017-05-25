@@ -75,17 +75,53 @@ public class RunnerClass
             
             
             playerMove = playerInput.nextLine();
-            
 
-            if (listOfLegalMoves.indexOf(playerMove) != -1) {
+            /*int oldX = Character.getNumericValue(playerMove.charAt(0));
+            int oldY = Character.getNumericValue(playerMove.charAt(1));
+            int newX = Character.getNumericValue(playerMove.charAt(2));
+            
+            int newY;
+            char promotedPiece = 'E'; // E for error
+            char capturedPiece = playerMove.charAt(4);
+            
+            int pawnDirection = (side ? -1 : 1);
+            int promotionRank = (side ? 0 : 7);
+
+
+
+
+            ERROR HANDLING, REVAMP IF I HAVE TIME
+
+
+
+            if (playerMove.length() != 5) {
+                System.out.println("Invalid move, move must be 5 characters long");
+                System.out.println(gameBoard);
+            }
+            if ( (oldX < 0 || oldX > 7) || (oldY < 0 || oldY > 7) || (newX < 0 || newX > 7) || (newY < 0 || newY > 7) ) {
+                System.out.println("Invalid move, move coordinates must be in range (0 <= coordinate <= 7)");
+                System.out.println(gameBoard);
+            }
+            if (capturedPiece != gameBoard.getPosition()[newY][newX]) {
+                System.out.println("Invalid move, there is no " + capturedPiece + " at coordinates " + newX + ", " + newY);
+                System.out.println(gameBoard);
+            }*/
+
+            if (listOfLegalMoves.indexOf(playerMove) == -1) {
+                System.out.println("Invalid move, " + playerMove + " is illigal by the rules of chess.");
+                System.out.println(gameBoard);
+            }
+
+            else {
 
                 gameBoard.makeMove(playerMove);
 
+                System.out.println();
                 System.out.println(gameBoard);
 
                 if (gameBoard.winState().equals("Checkmate")) {
-                System.out.println("Checkmate! " + (side ? player2 : player1) + " is the winner!");
-                gameInProgress = false;
+                    System.out.println("Checkmate! " + (side ? player1 : player2) + " is the winner!");
+                    gameInProgress = false;
                 }
                 else if (gameBoard.winState().equals("Stalemate")) {
                     System.out.println("Stalemate! It is a draw. :(");
@@ -95,11 +131,6 @@ public class RunnerClass
                     System.out.println("Play continues...");
                 }
 
-            }
-            else {
-                System.out.println("Invalid move, " + playerMove + " is illigal by the rules of chess.");
-                
-                System.out.println(gameBoard);
             }
             
             

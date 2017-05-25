@@ -2,6 +2,14 @@ public class BoardState
 {
     private char[][] savedPosition;
     private boolean sideToMove;
+
+    private boolean canWhiteCastleKingside;
+    private boolean canWhiteCastleQueenside;
+    private boolean canBlackCastleKingside;
+    private boolean canBlackCastleQueenside;
+    // true = CAN castle
+    // false = CANNOT castle
+
     
     public BoardState() {
         char[][] emptyBoard = {
@@ -20,16 +28,53 @@ public class BoardState
         
         savedPosition = emptyBoard;
         sideToMove = true; // true = WHITE, false = black
+
+        canWhiteCastleKingside = true;
+        canWhiteCastleQueenside = true;
+        canBlackCastleKingside = true;
+        canBlackCastleQueenside = true;
     }
     
     public BoardState(char[][] inputBoard) {
         savedPosition = inputBoard;
-        sideToMove = true; 
+        sideToMove = true;
+
+        canWhiteCastleKingside = true;
+        canWhiteCastleQueenside = true;
+        canBlackCastleKingside = true;
+        canBlackCastleQueenside = true;
     }
 
     public BoardState(char[][] inputBoard, boolean inputSide) {
         savedPosition = inputBoard;
         sideToMove = inputSide;
+
+        canWhiteCastleKingside = true;
+        canWhiteCastleQueenside = true;
+        canBlackCastleKingside = true;
+        canBlackCastleQueenside = true;
+        // NOTE I GOTTA CHANGE THAT PART WITH THE TEMPKING BOARD AND THE SWAP BOARD SO THAT IT USES THE
+        // NEXT CONSTRUCTOR OF BOARDSTATE NOT THIS ONE
+    }
+
+    public BoardState(char[][] inputBoard, boolean inputSide, boolean wKing, boolean wQueen, boolean bKing, boolean bQueen) {
+        savedPosition = inputBoard;
+        sideToMove = inputSide;
+
+        canWhiteCastleKingside = wKing;
+        canWhiteCastleQueenside = wQueen;
+        canBlackCastleKingside = bKing;
+        canBlackCastleQueenside = bQueen;
+    }
+
+    public BoardState(char[][] inputBoard, boolean inputSide, String castlingState) {
+        savedPosition = inputBoard;
+        sideToMove = inputSide;
+
+        canWhiteCastleKingside = (castlingState.indexOf("K") != -1);
+        canWhiteCastleQueenside = (castlingState.indexOf("Q") != -1);
+        canBlackCastleKingside = (castlingState.indexOf("k") != -1);
+        canBlackCastleQueenside = (castlingState.indexOf("q") != -1);
     }
     
     public char[][] getPosition() {
@@ -38,6 +83,33 @@ public class BoardState
 
     public boolean getSide() {
         return sideToMove;
+    }
+
+    public boolean getWhiteKingCastling() {
+        return canWhiteCastleKingside;
+    }
+
+    public boolean getWhiteQueenCastling() {
+        return canWhiteCastleQueenside;
+    }
+
+    public boolean getBlackKingCastling() {
+        return canBlackCastleKingside;
+    }
+
+    public boolean getBlackQueenCastling() {
+        return canBlackCastleQueenside;
+    }
+
+    public String getCastlingState() {
+        String castlingState = "";
+
+        castlingState += (canWhiteCastleKingside ? "K" : "");
+        castlingState += (canWhiteCastleQueenside ? "Q" : "");
+        castlingState += (canBlackCastleKingside ? "k" : "");
+        castlingState += (canBlackCastleQueenside ? "q" : "");
+
+        return castlingState;
     }
     
     
@@ -53,9 +125,6 @@ public class BoardState
             return this;
         }
         
-        int pawnDirection = (sideToMove ? -1 : 1);
-        int promotionRank = (sideToMove ? 0 : 7);
-        
         String typeOfMove = "Standard";
         
         int oldX = Character.getNumericValue(move.charAt(0));
@@ -64,9 +133,11 @@ public class BoardState
         
         int newY;
         char promotedPiece = 'E'; // E for error
-        
         char capturedPiece = move.charAt(4);
         
+        int pawnDirection = (sideToMove ? -1 : 1);
+        int promotionRank = (sideToMove ? 0 : 7);
+
         //if its a pawn promotion
         if (move.charAt(3) == 'Q' || move.charAt(3) == 'R' || move.charAt(3) == 'B' || move.charAt(3) == 'N'
            || move.charAt(3) == 'q' || move.charAt(3) == 'r' || move.charAt(3) == 'b' || move.charAt(3) == 'n')
@@ -148,7 +219,7 @@ public class BoardState
     public boolean isKingTakeable() {
         // if it's WHITE's turn to move it sees whether or not the BLACK king is in check
         // if it's BLACK's turn to move it sees whether or not the WHITE king is in check (can be taken)
-        boolean side = this.getSide();
+        boolean side = sideToMove;
 
         String listOfMoves = MoveFinder.possibleMoves(this);
 
@@ -165,7 +236,7 @@ public class BoardState
         // returns TRUE if the player whose turn it is CAN'T MOVE
         // returns FALSE if play continues
         
-        String listOfMoves = MoveFinder.possibleMoves(this);
+        String listOfMoves = MoveFinder.legalMoves(this);
         return (listOfMoves.length() == 0);
     }
     
