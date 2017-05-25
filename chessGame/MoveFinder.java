@@ -326,6 +326,25 @@ public class MoveFinder
         list += moveToSquare(boardToSearch, yCoord, xCoord, 1, 0);
         list += moveToSquare(boardToSearch, yCoord, xCoord, 1, 1);
 
+        list += possibleCastles(boardToSearch);
+
+        return list;
+    }
+
+    public static String possibleCastles(BoardState boardToSearch) {
+        char[][] position = boardToSearch.getPosition();
+        boolean side = boardToSearch.getSide();
+
+        String list = "";
+
+        boolean areKingsidesPossible = (side ? boardToSearch.getWhiteKingCastling() : boardToSearch.getBlackKingCastling());
+        boolean areQueensidesPossible = (side ? boardToSearch.getWhiteQueenCastling() : boardToSearch.getBlackQueenCastling());
+
+        
+
+        list += (areKingsidesPossible ? "O-O  " : "");
+        list += (areQueensidesPossible ? "O-O-O" : "");
+
         return list;
     }
 

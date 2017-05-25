@@ -127,19 +127,24 @@ public class BoardState
         
         String typeOfMove = "Standard";
         
-        int oldX = Character.getNumericValue(move.charAt(0));
-        int oldY = Character.getNumericValue(move.charAt(1));
-        int newX = Character.getNumericValue(move.charAt(2));
-        
+        int oldX;
+        int oldY;
+        int newX;
         int newY;
         char promotedPiece = 'E'; // E for error
-        char capturedPiece = move.charAt(4);
+        char capturedPiece;
         
         int pawnDirection = (sideToMove ? -1 : 1);
         int promotionRank = (sideToMove ? 0 : 7);
 
-        //if its a pawn promotion
-        if (move.charAt(3) == 'Q' || move.charAt(3) == 'R' || move.charAt(3) == 'B' || move.charAt(3) == 'N'
+        // if it's a castling move
+        if (move.charAt(0) == 'O') {
+            //uhh idk do i define newX and newY here or do i just say "typeOfMove = "Castling""
+            // yeah i think i should just do that and then move all the stuff in the else if into the
+            // "else if (typeOfMove.equals("Promotion"))" part down there
+        }
+        // if it's a pawn promotion
+        else if (move.charAt(3) == 'Q' || move.charAt(3) == 'R' || move.charAt(3) == 'B' || move.charAt(3) == 'N'
            || move.charAt(3) == 'q' || move.charAt(3) == 'r' || move.charAt(3) == 'b' || move.charAt(3) == 'n')
         {
             if (oldY != promotionRank - pawnDirection) {
@@ -154,12 +159,31 @@ public class BoardState
             promotedPiece = move.charAt(3);
             typeOfMove = "Promotion";
         }
+        // else, it's a standard move
         else {
+            oldX = Character.getNumericValue(move.charAt(0));
+            oldY = Character.getNumericValue(move.charAt(1));
+            newX = Character.getNumericValue(move.charAt(2));
             newY = Character.getNumericValue(move.charAt(3));
+            capturedPiece = move.charAt(4);
         }
         
         
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         if ( (oldX < 0 || oldX > 7) || (oldY < 0 || oldY > 7) || (newX < 0 || newX > 7) || (newY < 0 || newY > 7) ) {
             System.out.println("Invalid move, move coordinates must be in range (0 <= coordinate <= 7)");
@@ -190,11 +214,36 @@ public class BoardState
             savedPosition[oldY][oldX] = ' ';
         }
         
-        //System.out.println("TESTOZESTO " + savedPosition[newX][newY]);
-        //System.out.println(this.toString());
+
+
+
+
+        if (oldX == 4 && oldY == 0) {
+            canBlackCastleKingside = false;
+            canBlackCastleQueenside = false;
+        }
+        if (oldX == 4 && oldY == 7) {
+            canWhiteCastleKingside = false;
+            canWhiteCastleQueenside = false;
+        }
+        
+
+        if ((oldX == 0 && oldY == 0) || (newX == 0 && newY == 0)) {
+            canBlackCastleQueenside = false;
+        }
+        if ((oldX == 7 && oldY == 0) || (newX == 7 && newY == 0)) {
+            canBlackCastleKingside = false;
+        }
+        if ((oldX == 0 && oldY == 7) || (newX == 0 && newY == 7)) {
+            canWhiteCastleQueenside = false;
+        }
+        if ((oldX == 7 && oldY == 7) || (newX == 7 && newY == 7)) {
+            canWhiteCastleKingside = false;
+        }
 
         sideToMove = !sideToMove; //this is SUPER IMPORTANT, changes whose turn it is
         return this;
+
         
         
         //System.out.println("" + oldX + oldY + newX + newY);
