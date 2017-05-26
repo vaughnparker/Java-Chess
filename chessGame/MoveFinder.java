@@ -254,7 +254,7 @@ public class MoveFinder
             //movement type B: starting 2 squares forward
             if (yCoord == 7 -  promotionRank + pawnDirection) {
                 //System.out.println("double space working");
-                if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + (2 * pawnDirection)][xCoord] == ' ') {
+                if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + pawnDirection][xCoord] == ' ' && position[yCoord + (2 * pawnDirection)][xCoord] == ' ') {
                     list = list + xCoord + yCoord +  xCoord + (yCoord + (2 * pawnDirection)) + " ";
                 }
             }
@@ -339,8 +339,34 @@ public class MoveFinder
 
         boolean areKingsidesPossible = (side ? boardToSearch.getWhiteKingCastling() : boardToSearch.getBlackKingCastling());
         boolean areQueensidesPossible = (side ? boardToSearch.getWhiteQueenCastling() : boardToSearch.getBlackQueenCastling());
+        int castlingYCoord = (side ? 7 : 0);
 
-        
+        // check if there are any temporary reasons you can't castle
+        // checks that there are no pieces between the king and the chosen rook
+        if (position[castlingYCoord][5] != ' ' || position[castlingYCoord][6] != ' ') {
+            areKingsidesPossible = false;
+        }
+        if (position[castlingYCoord][1] != ' ' || position[castlingYCoord][2] != ' ' || position[castlingYCoord][3] != ' ') {
+            areQueensidesPossible = false;
+        }
+
+
+        /*Castling is permissible if and only if all of the following conditions hold:
+        The king and the chosen rook are on the player's first rank.
+            WORKING - boolean stuff
+        Neither the king nor the chosen rook has previously moved.
+            WORKING - boolean instance fields of BoardState
+        There are no pieces between the king and the chosen rook.
+            WORKING - checked in possibleCastles()
+        The king is not currently in check.
+            NOT IMPLEMENTED YET
+        The king does not pass through a square that is attacked by an enemy piece.
+            NOT IMPLEMENTED YET
+        The king does not end up in check. (True of any legal move.)
+            PROBABLY WORKS, NEEDS MORE TESTING*/
+
+
+
 
         list += (areKingsidesPossible ? "O-O  " : "");
         list += (areQueensidesPossible ? "O-O-O" : "");

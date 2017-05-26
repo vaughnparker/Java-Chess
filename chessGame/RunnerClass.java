@@ -26,13 +26,9 @@ public class RunnerClass
         //MoveFinder runnerFinder = new MoveFinder();
         
         System.out.println(MoveFinder.possibleMoves(gameBoard));
-        //System.out.println(gameBoard);
-        
         System.out.println(MoveFinder.legalMoves(gameBoard));
-        //System.out.println(gameBoard);
-        
-        
-        
+        System.out.println(Notation.convertListToAlgebraic(gameBoard, MoveFinder.legalMoves(gameBoard)));
+
         /*System.out.println();
         System.out.println(gameBoard.makeMove("4644 "));
         
@@ -44,19 +40,19 @@ public class RunnerClass
         
         
         
+        System.out.println("Which side is computer? ");
+        boolean computerSide = playerInput.nextBoolean();
         
-        
-        System.out.println();
+        /*System.out.println();
         System.out.println("Enter Player 1: ");
         String player1 = playerInput.nextLine();
-        //System.out.println(inputTestString);
         
         System.out.println();
         System.out.println("Enter Player 2: ");
         String player2 = playerInput.nextLine();
         
         System.out.println();
-        System.out.println("Okay, we have " + player1 + " vs. " + player2 + ". Begin!");
+        System.out.println("Okay, we have " + player1 + " vs. " + player2 + ". Begin!");*/
         System.out.println(gameBoard);
         // for now let's just assume that its player vs player
         // player1 = WHITE, player2 = black
@@ -68,13 +64,25 @@ public class RunnerClass
         while(gameInProgress) {
             
             boolean side = gameBoard.getSide();
-            System.out.println((side ? player1 : player2) + " to move!");
+            //System.out.println((side ? player1 : player2) + " to move!");
             listOfLegalMoves = MoveFinder.legalMoves(gameBoard);
             System.out.println(listOfLegalMoves);
+            System.out.println(Notation.convertListToAlgebraic(gameBoard, listOfLegalMoves));
+            
+            
+            
+            
+            if(side == computerSide) {
+                playerMove = MrDumb.chooseMove(gameBoard);
+            }
+            else {
+                playerMove = playerInput.nextLine();
+            }
+            System.out.println("THE MOVE IS: " + playerMove + " or " + Notation.convertCrazyToAlgebraic(gameBoard, playerMove));
 
-            
-            
-            playerMove = playerInput.nextLine();
+
+
+
 
             /*int oldX = Character.getNumericValue(playerMove.charAt(0));
             int oldY = Character.getNumericValue(playerMove.charAt(1));
@@ -120,7 +128,8 @@ public class RunnerClass
                 System.out.println(gameBoard);
 
                 if (gameBoard.winState().equals("Checkmate")) {
-                    System.out.println("Checkmate! " + (side ? player1 : player2) + " is the winner!");
+                    //System.out.println("Checkmate! " + (side ? player1 : player2) + " is the winner!");
+                    System.out.println("Checkmate! " + side + " is the winner!");
                     gameInProgress = false;
                 }
                 else if (gameBoard.winState().equals("Stalemate")) {

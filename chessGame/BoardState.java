@@ -125,7 +125,7 @@ public class BoardState
             return this;
         }
         
-        String typeOfMove = "Standard";
+        String typeOfMove;
         
         int oldX;
         int oldY;
@@ -139,32 +139,67 @@ public class BoardState
 
         // if it's a castling move
         if (move.charAt(0) == 'O') {
+            
+            typeOfMove = "Castling";
+
+            if (move.substring(3).equals("  ")) {
+                // if it's a kingside castle
+
+                oldX = 4;
+                oldY = 7 - promotionRank;
+                newX = 6;
+                newY = 7 - promotionRank;
+                
+                capturedPiece = 'E';
+            }
+            else if (move.substring(3).equals("-O")) {
+                // if it's a queenside castle
+
+                oldX = 4;
+                oldY = 7 - promotionRank;
+                newX = 2;
+                newY = 7 - promotionRank;
+                
+                capturedPiece = 'E';
+            }
+            else {
+                System.out.println("Invalid move, to castle input either \"O-O  \" or \"O-O-O\"");
+                return this;
+            }
             //uhh idk do i define newX and newY here or do i just say "typeOfMove = "Castling""
             // yeah i think i should just do that and then move all the stuff in the else if into the
             // "else if (typeOfMove.equals("Promotion"))" part down there
         }
         // if it's a pawn promotion
         else if (move.charAt(3) == 'Q' || move.charAt(3) == 'R' || move.charAt(3) == 'B' || move.charAt(3) == 'N'
-           || move.charAt(3) == 'q' || move.charAt(3) == 'r' || move.charAt(3) == 'b' || move.charAt(3) == 'n')
-        {
+           || move.charAt(3) == 'q' || move.charAt(3) == 'r' || move.charAt(3) == 'b' || move.charAt(3) == 'n') {
+
+            typeOfMove = "Promotion";
+
+            oldX = Character.getNumericValue(move.charAt(0));
+            oldY = Character.getNumericValue(move.charAt(1));
+            newX = Character.getNumericValue(move.charAt(2));
+            newY = promotionRank;
+            
+            promotedPiece = move.charAt(3);
+            capturedPiece = move.charAt(4);
+
             if (oldY != promotionRank - pawnDirection) {
                 System.out.println("Invalid move, pawn must be on 2nd or 7th rank to promote");
                 return this;
             }
             
-            
-            
-            newY = promotionRank;
-            
-            promotedPiece = move.charAt(3);
-            typeOfMove = "Promotion";
         }
         // else, it's a standard move
         else {
+            
+            typeOfMove = "Standard";
+            
             oldX = Character.getNumericValue(move.charAt(0));
             oldY = Character.getNumericValue(move.charAt(1));
             newX = Character.getNumericValue(move.charAt(2));
             newY = Character.getNumericValue(move.charAt(3));
+
             capturedPiece = move.charAt(4);
         }
         
@@ -189,7 +224,7 @@ public class BoardState
             System.out.println("Invalid move, move coordinates must be in range (0 <= coordinate <= 7)");
             return this;
         }
-        if (capturedPiece != savedPosition[newY][newX]) {
+        if (capturedPiece != savedPosition[newY][newX] && typeOfMove != "Castling") {
             System.out.println("Invalid move, there is no " + capturedPiece + " at coordinates " + newX + ", " + newY);
             return this;
         }
@@ -201,18 +236,29 @@ public class BoardState
             System.out.println("Invalid move, " + move + " is not a legal move.");
             return this;
         }*/
+        //GO BACK TO THIS IF I IMPLEMENT UNDOMOVE
+        // AND MAKE THIS EXCEPT REPLACE LEGAL WITH POSSIBLE AND THEN IN THE RUNNER CLASS CHECK
+        // TO SEE IF ITS LEGAL AND IF IT'S NOT THEN UNDO THE MOVE
 
 
-
-        
-        if (typeOfMove.equals("Standard")) {
-            savedPosition[newY][newX] = savedPosition[oldY][oldX];
+        if (typeOfMove.equals("Castling")) {
+            //changes king's position
+            savedPosition[newY][newX] = (sideToMove ? 'K' : 'k');
             savedPosition[oldY][oldX] = ' ';
+
+            //changes rook's position
+            savedPosition[newY][(oldX + newX) / 2] = (sideToMove ? 'R' : 'r');
+            savedPosition[oldY][((move.substring(3).equals("  ")) ? 7 : 0)] = ' ';
         }
         else if (typeOfMove.equals("Promotion")) {
             savedPosition[newY][newX] = promotedPiece;
             savedPosition[oldY][oldX] = ' ';
         }
+        else if (typeOfMove.equals("Standard")) {
+            savedPosition[newY][newX] = savedPosition[oldY][oldX];
+            savedPosition[oldY][oldX] = ' ';
+        }
+        
         
 
 
