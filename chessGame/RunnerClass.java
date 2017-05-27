@@ -64,6 +64,7 @@ public class RunnerClass
         while(gameInProgress) {
             
             boolean side = gameBoard.getSide();
+            System.out.println(side);
             //System.out.println((side ? player1 : player2) + " to move!");
             listOfLegalMoves = MoveFinder.legalMoves(gameBoard);
             System.out.println(listOfLegalMoves);
