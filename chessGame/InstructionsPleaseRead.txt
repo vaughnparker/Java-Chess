@@ -1,0 +1,41 @@
+To Mr. Young:
+
+These are the instructions for using the chess program that is included in this ZIP
+
+Firstly, compile all the classes and run RunnerClass.
+Then, you will see a menu with options to select.
+	- If you would like to play against yourself or against another human on the same machine, press 1
+	- If you would like to play against Mr. Dumb(an AI who chooses a random move), press 2
+	- If you would like to play against Mr. Mobile(an AI who chooses the move which gives him the most moves compared to his opponent), press 3
+	- If you would like to play against Mr. Value(an AI who chooses the move which gives him the greatest material advantage in terms of number of pieces on the board compared to his opponent), press 4
+
+The Coordinate System
+	- The top row is row 0 and squares on this row have a y-coordinate of 0
+	- The bottom row is row 7 and squares on this row have a y-coordinate of 7
+	- The leftmost column is column 0 and squares on this column have an x-coordinate of 0
+	- The rightmost column is column 7 and squares on this column have an x-coordinate of 7
+
+If it is the human's turn to input a move, the move they input must be exactly 5 characters.
+	- The first character must be the current x-coordinate of the moving piece
+	- The second character must be the current y-coordinate of the moving piece
+	- The third character must be the new x-coordinate of the moving piece
+	- The fourth character must be the new y-coordinate of the moving piece
+	- The fifth character must be the piece that is currently occupying the square you are moving to
+
+Since most moves in chess do not involve captures, the fifth character is usually a ' ' character
+However, it is still important to include this, and a move will not be made unless the move string is exactly 5 characters.
+After the current gameboard is printed, the program will print a list of all legal moves, firstly in coordinate notation and secondly in traditional algebraic notation
+	- HOWEVER, WHEN YOU ARE INPUTTING MOVES, THE COMPUTER ONLY ACCEPTS COORDINATE NOTATION, NOT ALGEBRAIC
+	- This means that moves such as "4644 " are acceptable but moves such as "e4" or " e4  " are not
+
+For example, in the starting position, the legal moves available to white are:
+0605 0604 1615 1614 2625 2624 3635 3634 4645 4644 5655 5654 6665 6664 7675 7674 1705 1725 6755 6775 
+ a3   a4   b3   b4   c3   c4   d3   d4   e3   e4   f3   f4   g3   g4   h3   h4  Na3  Nc3  Nf3  Nh3  
+
+ 	- If you want to move the knight on b1 to c3, you must enter "1725 " (including the space)
+
+I believe that all other parts of running my program are self-explanitory
+
+Have fun!
+
+-Vaughn Parker

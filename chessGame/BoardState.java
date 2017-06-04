@@ -299,16 +299,32 @@ public class BoardState
     }
     
     public String toString() {
+        //String textBoard = "-----------------\n";
         String textBoard = "";
         
         for (int i = 0; i < savedPosition.length; i++) {
             for (int j = 0; j < savedPosition[i].length; j++) {
-                    textBoard += savedPosition[i][j] + " ";
+                    textBoard += "|" + savedPosition[i][j];
                 }
-            textBoard += "\n";
+            //textBoard += "|\n-----------------\n";
+            textBoard += "|\n";
             }
             
         return textBoard;
+    }
+
+    public BoardState cloneBoard() {
+
+        char[][] clonedPosition = new char[8][8];
+
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    clonedPosition[row][col] = getPosition()[row][col];
+                }
+            }
+
+        return new BoardState(clonedPosition, getSide(),
+            getWhiteKingCastling(), getWhiteQueenCastling(), getBlackKingCastling(), getBlackQueenCastling());
     }
 
     public boolean isKingTakeable() {
@@ -362,5 +378,9 @@ public class BoardState
         }
         
         return "Play continues";
+    }
+
+    public void swapSide() {
+        sideToMove = !sideToMove;
     }
 }

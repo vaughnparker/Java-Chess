@@ -19,42 +19,115 @@ public class RunnerClass
         BoardState gameBoard = new BoardState(testingPosition, true);*/
 
         BoardState gameBoard = new BoardState();
-        //char[][] currentPosition = gameBoard.getPosition();
 
         System.out.println(gameBoard);
         
-        //MoveFinder runnerFinder = new MoveFinder();
-        
+        /*
         System.out.println(MoveFinder.possibleMoves(gameBoard));
         System.out.println(MoveFinder.legalMoves(gameBoard));
         System.out.println(Notation.convertListToAlgebraic(gameBoard, MoveFinder.legalMoves(gameBoard)));
+        */
+        
+        
+        
+        
+        System.out.println("Hello! Welcome to chess!");
 
-        /*System.out.println();
-        System.out.println(gameBoard.makeMove("4644 "));
+        int gamemode;
+        String player1;
+        String player2;
+        boolean computerSide = false;
+        boolean side;
+        // player1 = WHITE, player2 = black
+
+        while(true) {
+            System.out.println("Which gamemode would you like?");
+            System.out.println("Enter 1 for human vs human");
+            System.out.println("Enter 2 for human vs Mr. Dumb");
+            System.out.println("Enter 3 for human vs Mr. Mobile");
+            System.out.println("Enter 4 for human vs Mr. Value");
+
+            gamemode = playerInput.nextInt();
+            playerInput.nextLine();
+
+            if (gamemode == 1) {
+                System.out.println();
+                System.out.println("Enter Player 1 name (white):");
+                player1 = playerInput.nextLine();
+                
+                System.out.println();
+                System.out.println("Enter Player 2 name (black):");
+                player2 = playerInput.nextLine();
+
+                break;
+            }
+            else if (gamemode == 2) {
+                System.out.println("Which side is computer playing? Enter true for white or false for black.");
+                computerSide = playerInput.nextBoolean();
+                playerInput.nextLine();
+
+                System.out.println("Enter Player name " + (computerSide ? "(black):" : "(white):"));
+                
+                if (computerSide) {
+                    player1 = "Mr. Dumb";
+                    player2 = playerInput.nextLine();
+                }
+                else {
+                    player1 = playerInput.nextLine();
+                    player2 = "Mr. Dumb"; 
+                }
+
+                break;
+            }
+            else if (gamemode == 3) {
+                System.out.println("Which side is computer playing? Enter true for white or false for black.");
+                computerSide = playerInput.nextBoolean();
+                playerInput.nextLine();
+
+                System.out.println("Enter Player name " + (computerSide ? "(black):" : "(white):"));
+
+                if (computerSide) {
+                    player1 = "Mr. Mobile";
+                    player2 = playerInput.nextLine();
+                }
+                else {
+                    player1 = playerInput.nextLine();
+                    player2 = "Mr. Mobile"; 
+                }
+
+                break;
+            }
+            else if (gamemode == 4) {
+                System.out.println("Which side is computer playing? Enter true for white or false for black.");
+                computerSide = playerInput.nextBoolean();
+                playerInput.nextLine();
+
+                System.out.println("Enter Player name " + (computerSide ? "(black):" : "(white):"));
+
+                if (computerSide) {
+                    player1 = "Mr. Value";
+                    player2 = playerInput.nextLine();
+                }
+                else {
+                    player1 = playerInput.nextLine();
+                    player2 = "Mr. Value"; 
+                }
+
+                break;
+            }
+            else {
+                System.out.println("Invalid gamemode, please enter an integer from 1-4");
+            }
+        }
+        
+        
+        
+        
         
         System.out.println();
-        System.out.println(gameBoard.makeMove("211Qn"));*/
-        
-        
-        
-        
-        
-        
-        System.out.println("Which side is computer? ");
-        boolean computerSide = playerInput.nextBoolean();
-        
-        /*System.out.println();
-        System.out.println("Enter Player 1: ");
-        String player1 = playerInput.nextLine();
-        
+        System.out.println("Okay, we have " + player1 + " vs. " + player2 + ". Begin!");
         System.out.println();
-        System.out.println("Enter Player 2: ");
-        String player2 = playerInput.nextLine();
-        
-        System.out.println();
-        System.out.println("Okay, we have " + player1 + " vs. " + player2 + ". Begin!");*/
         System.out.println(gameBoard);
-        // for now let's just assume that its player vs player
         // player1 = WHITE, player2 = black
 
         boolean gameInProgress = true;
@@ -63,9 +136,8 @@ public class RunnerClass
         
         while(gameInProgress) {
             
-            boolean side = gameBoard.getSide();
-            System.out.println(side);
-            //System.out.println((side ? player1 : player2) + " to move!");
+            side = gameBoard.getSide();
+            System.out.println((side ? player1 : player2) + " to move!");
             listOfLegalMoves = MoveFinder.legalMoves(gameBoard);
             System.out.println(listOfLegalMoves);
             System.out.println(Notation.convertListToAlgebraic(gameBoard, listOfLegalMoves));
@@ -73,13 +145,25 @@ public class RunnerClass
             
             
             
-            if(side == computerSide) {
-                playerMove = MrDumb.chooseMove(gameBoard);
+            if ((gamemode != 1) && (side == computerSide)) {
+                if (gamemode == 2) {
+                    playerMove = MrDumb.chooseMove(gameBoard);
+                }
+                else if (gamemode == 3) {
+                    playerMove = MrMobile.chooseMove(gameBoard);
+                }
+                else if (gamemode == 4) {
+                    playerMove = MrValue.chooseMove(gameBoard);
+                }
+                else {
+                    System.out.println("Error: There is no computer player for this gamemode");
+                }
             }
             else {
                 playerMove = playerInput.nextLine();
             }
-            System.out.println("THE MOVE IS: " + playerMove + " or " + Notation.convertCrazyToAlgebraic(gameBoard, playerMove));
+
+            System.out.println((side ? player1 : player2) + " played " + playerMove + " or " + Notation.convertCrazyToAlgebraic(gameBoard, playerMove));
 
 
 
@@ -117,7 +201,7 @@ public class RunnerClass
             }*/
 
             if (listOfLegalMoves.indexOf(playerMove) == -1) {
-                System.out.println("Invalid move, " + playerMove + " is illigal by the rules of chess.");
+                System.out.println((side ? player1 : player2) + " made an invalid move, " + playerMove + " is illigal by the rules of chess.");
                 System.out.println(gameBoard);
             }
 
@@ -129,8 +213,8 @@ public class RunnerClass
                 System.out.println(gameBoard);
 
                 if (gameBoard.winState().equals("Checkmate")) {
-                    //System.out.println("Checkmate! " + (side ? player1 : player2) + " is the winner!");
-                    System.out.println("Checkmate! " + side + " is the winner!");
+                    System.out.println("Checkmate! " + (side ? player1 : player2) + " is the winner!");
+                    //System.out.println("Checkmate! " + side + " is the winner!");
                     gameInProgress = false;
                 }
                 else if (gameBoard.winState().equals("Stalemate")) {

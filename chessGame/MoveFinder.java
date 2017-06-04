@@ -33,7 +33,7 @@ public class MoveFinder
             x = i % 8;
             //top row has y = 0, bottom row has y == 7
             //left 'column' has x == 0
-            //a piece on e4 = position[4][5]
+            //a piece on e4 = position[4][4]
 
             if(sideToMove) {
                 // if it is WHITE's move
@@ -254,7 +254,9 @@ public class MoveFinder
             //movement type B: starting 2 squares forward
             if (yCoord == 7 -  promotionRank + pawnDirection) {
                 //System.out.println("double space working");
-                if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + pawnDirection][xCoord] == ' ' && position[yCoord + (2 * pawnDirection)][xCoord] == ' ') {
+                if (isValidSquare(boardToSearch, yCoord + (2 * pawnDirection), xCoord) && position[yCoord + pawnDirection][xCoord] == ' '
+                    && isValidSquare(boardToSearch, yCoord + pawnDirection, xCoord) && position[yCoord + (2 * pawnDirection)][xCoord] == ' ') {
+
                     list = list + xCoord + yCoord +  xCoord + (yCoord + (2 * pawnDirection)) + " ";
                 }
             }
