@@ -116,16 +116,45 @@ public class BoardState
     
     
     
-    
+
+
+
+    public String determineTypeOfMove(String move) {
+        String typeOfMove;
+
+        // if it's a castling move
+        if (move.charAt(0) == 'O') {
+            
+            typeOfMove = "Castling";
+            
+        }
+        // if it's a pawn promotion
+        else if (Character.isLetter(move.charAt(3)) && "QRBNqrbn".indexOf(move.charAt(3)) != -1) {
+
+            typeOfMove = "Promotion";
+            
+        }
+        // else, it's a standard move
+        else {
+            
+            typeOfMove = "Standard";
+            
+        }
+
+        return typeOfMove;
+    }
     
     public BoardState makeMove(String move) {
-        
-        if (move.length() != 5) {
+
+        if (move.length() == 4) {
+            move += " "; // just in case it's a typo or a stupid user error
+        }
+        else if (move.length() != 5) {
             System.out.println("Invalid move, move must be 5 characters long");
             return this;
         }
         
-        String typeOfMove;
+        String typeOfMove = determineTypeOfMove(move);
         
         int oldX;
         int oldY;
@@ -137,10 +166,37 @@ public class BoardState
         int pawnDirection = (sideToMove ? -1 : 1);
         int promotionRank = (sideToMove ? 0 : 7);
 
-        // if it's a castling move
-        if (move.charAt(0) == 'O') {
-            
-            typeOfMove = "Castling";
+        
+
+        
+
+
+
+
+        // THESE ERROR MESSAGES DONT REALLY HAVE A GOOD PLACE SO I'LL JUST COMMENT THEM OUT FOR NOW. I DO PLAN
+        // TO FIX THE ERROR CHECKING SYSTEM LATER
+        /*if ( (oldX < 0 || oldX > 7) || (oldY < 0 || oldY > 7) || (newX < 0 || newX > 7) || (newY < 0 || newY > 7) ) {
+            System.out.println("Invalid move, move coordinates must be in range (0 <= coordinate <= 7)");
+            return this;
+        }
+        if (capturedPiece != savedPosition[newY][newX] && typeOfMove != "Castling") {
+            System.out.println("Invalid move, there is no " + capturedPiece + " at coordinates " + newX + ", " + newY);
+            return this;
+        }*/
+
+
+        // makeMove() cannot check if it's a legal move, because the legalMoves method relies on removeAllSelfChecks, which
+        // relies on the makeMove method
+        /*if (MoveFinder.legalMoves(this).indexOf(move) == -1) {
+            System.out.println("Invalid move, " + move + " is not a legal move.");
+            return this;
+        }*/
+        //GO BACK TO THIS IF I IMPLEMENT UNDOMOVE
+        // AND MAKE THIS EXCEPT REPLACE LEGAL WITH POSSIBLE AND THEN IN THE RUNNER CLASS CHECK
+        // TO SEE IF ITS LEGAL AND IF IT'S NOT THEN UNDO THE MOVE
+
+
+        if (typeOfMove.equals("Castling")) {
 
             if (move.substring(3).equals("  ")) {
                 // if it's a kingside castle
@@ -166,15 +222,16 @@ public class BoardState
                 System.out.println("Invalid move, to castle input either \"O-O  \" or \"O-O-O\"");
                 return this;
             }
-            //uhh idk do i define newX and newY here or do i just say "typeOfMove = "Castling""
-            // yeah i think i should just do that and then move all the stuff in the else if into the
-            // "else if (typeOfMove.equals("Promotion"))" part down there
-        }
-        // if it's a pawn promotion
-        else if (move.charAt(3) == 'Q' || move.charAt(3) == 'R' || move.charAt(3) == 'B' || move.charAt(3) == 'N'
-           || move.charAt(3) == 'q' || move.charAt(3) == 'r' || move.charAt(3) == 'b' || move.charAt(3) == 'n') {
 
-            typeOfMove = "Promotion";
+            //changes king's position
+            savedPosition[newY][newX] = (sideToMove ? 'K' : 'k');
+            savedPosition[oldY][oldX] = ' ';
+
+            //changes rook's position
+            savedPosition[newY][(oldX + newX) / 2] = (sideToMove ? 'R' : 'r');
+            savedPosition[oldY][((move.substring(3).equals("  ")) ? 7 : 0)] = ' ';
+        }
+        else if (typeOfMove.equals("Promotion")) {
 
             oldX = Character.getNumericValue(move.charAt(0));
             oldY = Character.getNumericValue(move.charAt(1));
@@ -188,73 +245,19 @@ public class BoardState
                 System.out.println("Invalid move, pawn must be on 2nd or 7th rank to promote");
                 return this;
             }
-            
+
+            savedPosition[newY][newX] = promotedPiece;
+            savedPosition[oldY][oldX] = ' ';
         }
-        // else, it's a standard move
-        else {
-            
-            typeOfMove = "Standard";
-            
+        else { // used to say if (typeOfMove.equals("Standard")), i'll fix this when i fix errors
+
             oldX = Character.getNumericValue(move.charAt(0));
             oldY = Character.getNumericValue(move.charAt(1));
             newX = Character.getNumericValue(move.charAt(2));
             newY = Character.getNumericValue(move.charAt(3));
 
             capturedPiece = move.charAt(4);
-        }
-        
-        
-        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        if ( (oldX < 0 || oldX > 7) || (oldY < 0 || oldY > 7) || (newX < 0 || newX > 7) || (newY < 0 || newY > 7) ) {
-            System.out.println("Invalid move, move coordinates must be in range (0 <= coordinate <= 7)");
-            return this;
-        }
-        if (capturedPiece != savedPosition[newY][newX] && typeOfMove != "Castling") {
-            System.out.println("Invalid move, there is no " + capturedPiece + " at coordinates " + newX + ", " + newY);
-            return this;
-        }
-
-
-        // makeMove() cannot check if it's a legal move, because the legalMoves method relies on removeAllSelfChecks, which
-        // relies on the makeMove method
-        /*if (MoveFinder.legalMoves(this).indexOf(move) == -1) {
-            System.out.println("Invalid move, " + move + " is not a legal move.");
-            return this;
-        }*/
-        //GO BACK TO THIS IF I IMPLEMENT UNDOMOVE
-        // AND MAKE THIS EXCEPT REPLACE LEGAL WITH POSSIBLE AND THEN IN THE RUNNER CLASS CHECK
-        // TO SEE IF ITS LEGAL AND IF IT'S NOT THEN UNDO THE MOVE
-
-
-        if (typeOfMove.equals("Castling")) {
-            //changes king's position
-            savedPosition[newY][newX] = (sideToMove ? 'K' : 'k');
-            savedPosition[oldY][oldX] = ' ';
-
-            //changes rook's position
-            savedPosition[newY][(oldX + newX) / 2] = (sideToMove ? 'R' : 'r');
-            savedPosition[oldY][((move.substring(3).equals("  ")) ? 7 : 0)] = ' ';
-        }
-        else if (typeOfMove.equals("Promotion")) {
-            savedPosition[newY][newX] = promotedPiece;
-            savedPosition[oldY][oldX] = ' ';
-        }
-        else if (typeOfMove.equals("Standard")) {
             savedPosition[newY][newX] = savedPosition[oldY][oldX];
             savedPosition[oldY][oldX] = ' ';
         }
@@ -297,6 +300,198 @@ public class BoardState
         //return move;
         //maybe return this.getAlgebraicNotation(move);
     }
+
+    public BoardState undoMove(String move) {
+
+        if (move.length() == 4) {
+            move += " "; // just in case it's a typo or a stupid user error
+        }
+        else if (move.length() != 5) {
+            System.out.println("Invalid move, move must be 5 characters long");
+            return this;
+        }
+        
+        String typeOfMove = determineTypeOfMove(move);
+        
+        int oldX;
+        int oldY;
+        int newX;
+        int newY;
+        char promotedPiece = 'E'; // E for error
+        char capturedPiece;
+        
+        int pawnDirection = (sideToMove ? -1 : 1);
+        int promotionRank = (sideToMove ? 0 : 7);
+
+        
+
+        
+
+
+
+
+        // refer to comments in makeMove() with regards to future fixes in error handling
+
+
+        if (typeOfMove.equals("Castling")) {
+
+            if (move.substring(3).equals("  ")) {
+                // if it's a kingside castle
+
+                oldX = 4;
+                oldY = 7 - promotionRank;
+                newX = 6;
+                newY = 7 - promotionRank;
+                
+                capturedPiece = 'E';
+            }
+            else if (move.substring(3).equals("-O")) {
+                // if it's a queenside castle
+
+                oldX = 4;
+                oldY = 7 - promotionRank;
+                newX = 2;
+                newY = 7 - promotionRank;
+                
+                capturedPiece = 'E';
+            }
+            else {
+                System.out.println("Invalid move, to castle input either \"O-O  \" or \"O-O-O\"");
+                return this;
+            }
+
+            /*savedPosition[newY][newX] = (sideToMove ? 'K' : 'k');
+            savedPosition[oldY][oldX] = ' ';
+
+            savedPosition[newY][(oldX + newX) / 2] = (sideToMove ? 'R' : 'r');
+            savedPosition[oldY][((move.substring(3).equals("  ")) ? 7 : 0)] = ' ';*/
+
+            //changes king's position
+            savedPosition[oldY][oldX] = savedPosition[newY][newX]; // savedPosition[newY][newX] should always be a K or k
+            savedPosition[newY][newX] = ' ';
+
+            //changes rook's position
+            savedPosition[newY][(oldX + newX) / 2] = ' ';
+            savedPosition[oldY][((move.substring(3).equals("  ")) ? 7 : 0)] = (sideToMove ? 'r' : 'R');
+        }
+        else if (typeOfMove.equals("Promotion")) {
+
+            oldX = Character.getNumericValue(move.charAt(0));
+            oldY = Character.getNumericValue(move.charAt(1));
+            newX = Character.getNumericValue(move.charAt(2));
+            newY = promotionRank;
+            
+            promotedPiece = move.charAt(3);
+            capturedPiece = move.charAt(4);
+
+            if (oldY != promotionRank - pawnDirection) {
+                System.out.println("Invalid move, pawn must be on 2nd or 7th rank to promote");
+                return this;
+            }
+
+            /*savedPosition[newY][newX] = promotedPiece;
+            savedPosition[oldY][oldX] = ' ';*/
+
+            // if sideToMove is true, meanining we are about to undo the last move made, which was made by black,
+            // then we need to put a black pawn at savedPosition[oldY][oldX]
+            savedPosition[oldY][oldX] = (sideToMove ? 'p' : 'P');
+            savedPosition[newY][newX] = capturedPiece;
+        }
+        else { // used to say if (typeOfMove.equals("Standard")), i'll fix this when i fix errors
+
+            oldX = Character.getNumericValue(move.charAt(0));
+            oldY = Character.getNumericValue(move.charAt(1));
+            newX = Character.getNumericValue(move.charAt(2));
+            newY = Character.getNumericValue(move.charAt(3));
+
+            capturedPiece = move.charAt(4);
+
+            /*savedPosition[newY][newX] = savedPosition[oldY][oldX];
+            savedPosition[oldY][oldX] = ' ';*/
+
+            savedPosition[oldY][oldX] = savedPosition[newY][newX];
+            savedPosition[newY][newX] = capturedPiece;
+        }
+        
+        
+
+
+
+
+        /*if (oldX == 4 && oldY == 0) {
+            canBlackCastleKingside = false;
+            canBlackCastleQueenside = false;
+        }
+        if (oldX == 4 && oldY == 7) {
+            canWhiteCastleKingside = false;
+            canWhiteCastleQueenside = false;
+        }
+        
+
+        if ((oldX == 0 && oldY == 0) || (newX == 0 && newY == 0)) {
+            canBlackCastleQueenside = false;
+        }
+        if ((oldX == 7 && oldY == 0) || (newX == 7 && newY == 0)) {
+            canBlackCastleKingside = false;
+        }
+        if ((oldX == 0 && oldY == 7) || (newX == 0 && newY == 7)) {
+            canWhiteCastleQueenside = false;
+        }
+        if ((oldX == 7 && oldY == 7) || (newX == 7 && newY == 7)) {
+            canWhiteCastleKingside = false;
+        }
+
+
+        // YEAH THE CASLTING THING DOESN'T REALLY WORK WELL WITH THE UNDO...
+        // I ALSO HAVE TO FIX THE PART WHERE YOU CAN CASTLE EVEN IF YOU'RE GOING THROUGH CHECK
+
+        
+        if (oldX == 4 && oldY == 0 && savedPosition[oldY][oldX] == 'k') {
+            canBlackCastleKingside = true;
+            canBlackCastleQueenside = true;
+        }
+        if (oldX == 4 && oldY == 7 && savedPosition[oldY][oldX] == 'K') {
+            canWhiteCastleKingside = true;
+            canWhiteCastleQueenside = true;
+        }
+        
+
+        if ((oldX == 0 && oldY == 0) || (newX == 0 && newY == 0)) {
+            canBlackCastleQueenside = false;
+        }
+        if ((oldX == 7 && oldY == 0) || (newX == 7 && newY == 0)) {
+            canBlackCastleKingside = false;
+        }
+        if ((oldX == 0 && oldY == 7) || (newX == 0 && newY == 7)) {
+            canWhiteCastleQueenside = false;
+        }
+        if ((oldX == 7 && oldY == 7) || (newX == 7 && newY == 7)) {
+            canWhiteCastleKingside = false;
+        }*/
+
+        sideToMove = !sideToMove; //this is SUPER IMPORTANT, changes whose turn it is
+        return this;
+
+        
+        
+        //System.out.println("" + oldX + oldY + newX + newY);
+        
+        //return move;
+        //maybe return this.getAlgebraicNotation(move);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     public String toString() {
         //String textBoard = "-----------------\n";

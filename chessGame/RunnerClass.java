@@ -201,7 +201,7 @@ public class RunnerClass
             }*/
 
             if (listOfLegalMoves.indexOf(playerMove) == -1) {
-                System.out.println((side ? player1 : player2) + " made an invalid move, " + playerMove + " is illigal by the rules of chess.");
+                System.out.println((side ? player1 : player2) + " made an invalid move, " + playerMove + " is illegal by the rules of chess.");
                 System.out.println(gameBoard);
             }
 

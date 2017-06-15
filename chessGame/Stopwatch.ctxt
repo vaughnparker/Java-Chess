@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Stopwatch()
+comment0.text=\r\n\ Initializes\ a\ new\ stopwatch.\r\n
+comment1.params=
+comment1.target=double\ elapsedTime()
+comment1.text=\r\n\ Returns\ the\ elapsed\ CPU\ time\ (in\ seconds)\ since\ the\ stopwatch\ was\ created.\r\n\r\n\ @return\ elapsed\ CPU\ time\ (in\ seconds)\ since\ the\ stopwatch\ was\ created\r\n
+numComments=2

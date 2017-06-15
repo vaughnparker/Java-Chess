@@ -1,6 +1,7 @@
 public final class MrMobile {
 
     public static final int MAX_DEPTH = 2;
+    public static int evalnumber = 0;
 
     public static String chooseMove(BoardState boardToSearch) {
         boolean side = boardToSearch.getSide();
@@ -67,7 +68,7 @@ public final class MrMobile {
 
         if (numberOfChoices == 0) {
             System.out.println("Theres no moves :O");
-            return (side ? -100 : 100);
+            return (side ? -1000 : 1000);
         }
 
         if (depth == 0) {
@@ -76,17 +77,23 @@ public final class MrMobile {
         else if (side) {
             // if its a maximizing node/Boardstate
             // also if it's white to move
-            BoardState[] childNodes = new BoardState[numberOfChoices];
+
+            //first make move
+            //then find its largest child
+            //then undo move
+
+
             double[] childValues = new double[numberOfChoices];
-            //double max = -Double.MAX_VALUE;
             double max = -1000;
 
-            for (int i = 0; i < childNodes.length; i++) {
-                childNodes[i] = boardToSearch.cloneBoard();
-                childNodes[i].makeMove(list.substring(i * 5, i * 5 + 5));
+            for (int i = 0; i < numberOfChoices; i++) {
 
-                childValues[i] = minimax(childNodes[i], depth-1);
+                boardToSearch.makeMove(list.substring(i * 5, i * 5 + 5));
+
+                childValues[i] = minimax(boardToSearch, depth-1);
                 max = Math.max(max, childValues[i]);
+
+                boardToSearch.undoMove(list.substring(i * 5, i * 5 + 5));
             }
 
             return max;
@@ -94,17 +101,18 @@ public final class MrMobile {
         else {
             // if its a minimizing node/Boardstate
             // also if it's black to move
-            BoardState[] childNodes = new BoardState[numberOfChoices];
+
             double[] childValues = new double[numberOfChoices];
-            //double min = Double.MAX_VALUE;
             double min = 1000;
 
-            for (int i = 0; i < childNodes.length; i++) {
-                childNodes[i] = boardToSearch.cloneBoard();
-                childNodes[i].makeMove(list.substring(i * 5, i * 5 + 5));
+            for (int i = 0; i < numberOfChoices; i++) {
 
-                childValues[i] = minimax(childNodes[i], depth-1);
+                boardToSearch.makeMove(list.substring(i * 5, i * 5 + 5));
+
+                childValues[i] = minimax(boardToSearch, depth-1);
                 min = Math.min(min, childValues[i]);
+
+                boardToSearch.undoMove(list.substring(i * 5, i * 5 + 5));
             }
 
             return min;
@@ -114,23 +122,28 @@ public final class MrMobile {
     public static double evaluationFunction(BoardState boardToSearch) {
     	boolean side = boardToSearch.getSide();
 
+        int whiteMobility;
+        int blackMobility;
+
+    	/*System.out.println(boardToSearch);
+    	evalnumber++;
+    	System.out.println("Evaluation #: " + evalnumber);*/
+
     	if (side) {
-    		int whiteMobility = MoveFinder.legalMoves(boardToSearch).length();
+    		whiteMobility = MoveFinder.legalMoves(boardToSearch).length();
 
     		BoardState swapEvalBoard = boardToSearch.cloneBoard();
     		swapEvalBoard.swapSide();
-    		int blackMobility = MoveFinder.legalMoves(swapEvalBoard).length();
-
-    		return whiteMobility - blackMobility;
+    		blackMobility = MoveFinder.legalMoves(swapEvalBoard).length();
     	}
     	else {
-    		int blackMobility = MoveFinder.legalMoves(boardToSearch).length();
+    		blackMobility = MoveFinder.legalMoves(boardToSearch).length();
 
     		BoardState swapEvalBoard = boardToSearch.cloneBoard();
     		swapEvalBoard.swapSide();
-    		int whiteMobility = MoveFinder.legalMoves(swapEvalBoard).length();
-
-    		return whiteMobility - blackMobility;
+    		whiteMobility = MoveFinder.legalMoves(swapEvalBoard).length();
     	}
+        System.out.println(whiteMobility - blackMobility);
+        return whiteMobility - blackMobility;
     }
 }
