@@ -119,7 +119,7 @@ public class BoardState
 
 
 
-    public String determineTypeOfMove(String move) {
+    public static String determineTypeOfMove(String move) {
         String typeOfMove;
 
         // if it's a castling move
@@ -290,7 +290,9 @@ public class BoardState
             canWhiteCastleKingside = false;
         }
 
-        sideToMove = !sideToMove; //this is SUPER IMPORTANT, changes whose turn it is
+        //sideToMove = !sideToMove;
+        swapSide();
+        //this is SUPER IMPORTANT, changes whose turn it is
         return this;
 
         
@@ -469,7 +471,9 @@ public class BoardState
             canWhiteCastleKingside = false;
         }*/
 
-        sideToMove = !sideToMove; //this is SUPER IMPORTANT, changes whose turn it is
+        //sideToMove = !sideToMove;
+        swapSide();
+        //this is SUPER IMPORTANT, changes whose turn it is
         return this;
 
         
@@ -520,6 +524,19 @@ public class BoardState
 
         return new BoardState(clonedPosition, getSide(),
             getWhiteKingCastling(), getWhiteQueenCastling(), getBlackKingCastling(), getBlackQueenCastling());
+    }
+
+    public void flipBoard() {
+        char[][] position = getPosition();
+        char[][] flippedPosition = new char[8][8];
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                flippedPosition[row][col] = position[7 - row][7 - col];
+            }
+        }
+
+        swapSide();
     }
 
     public boolean isKingTakeable() {

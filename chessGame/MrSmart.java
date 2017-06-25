@@ -1,4 +1,4 @@
-public final class MrMobile {
+public final class MrSmart {
 
     public static final int MAX_DEPTH = 2;
     public static int evalnumber = 0;
@@ -72,7 +72,7 @@ public final class MrMobile {
         }
 
         if (depth == 0) {
-            return evaluationFunction(boardToSearch);
+            return SmartEval.rating(boardToSearch);
         }
         else if (side) {
             // if its a maximizing node/Boardstate
@@ -119,31 +119,9 @@ public final class MrMobile {
         }
     }
     
-    public static double evaluationFunction(BoardState boardToSearch) {
+    /*public static double evaluationFunction(BoardState boardToSearch) {
     	boolean side = boardToSearch.getSide();
 
-        int whiteMobility;
-        int blackMobility;
-
-    	/*System.out.println(boardToSearch);
-    	evalnumber++;
-    	System.out.println("Evaluation #: " + evalnumber);*/
-
-    	if (side) {
-    		whiteMobility = MoveFinder.legalMoves(boardToSearch).length();
-
-    		BoardState swapEvalBoard = boardToSearch.cloneBoard();
-    		swapEvalBoard.swapSide();
-    		blackMobility = MoveFinder.legalMoves(swapEvalBoard).length();
-    	}
-    	else {
-    		blackMobility = MoveFinder.legalMoves(boardToSearch).length();
-
-    		BoardState swapEvalBoard = boardToSearch.cloneBoard();
-    		swapEvalBoard.swapSide();
-    		whiteMobility = MoveFinder.legalMoves(swapEvalBoard).length();
-    	}
-        //System.out.println(whiteMobility - blackMobility);
-        return whiteMobility - blackMobility;
-    }
+        
+    }*/
 }

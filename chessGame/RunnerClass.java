@@ -46,6 +46,7 @@ public class RunnerClass
             System.out.println("Enter 2 for human vs Mr. Dumb");
             System.out.println("Enter 3 for human vs Mr. Mobile");
             System.out.println("Enter 4 for human vs Mr. Value");
+            //System.out.println("Enter 5 for human vs Mr. Smart");
 
             gamemode = playerInput.nextInt();
             playerInput.nextLine();
@@ -115,8 +116,26 @@ public class RunnerClass
 
                 break;
             }
+            else if (gamemode == 5) {
+                System.out.println("Which side is computer playing? Enter true for white or false for black.");
+                computerSide = playerInput.nextBoolean();
+                playerInput.nextLine();
+
+                System.out.println("Enter Player name " + (computerSide ? "(black):" : "(white):"));
+
+                if (computerSide) {
+                    player1 = "Mr. Smart";
+                    player2 = playerInput.nextLine();
+                }
+                else {
+                    player1 = playerInput.nextLine();
+                    player2 = "Mr. Smart"; 
+                }
+
+                break;
+            }
             else {
-                System.out.println("Invalid gamemode, please enter an integer from 1-4");
+                System.out.println("Invalid gamemode, please enter an integer from 1-5");
             }
         }
         
@@ -154,6 +173,9 @@ public class RunnerClass
                 }
                 else if (gamemode == 4) {
                     playerMove = MrValue.chooseMove(gameBoard);
+                }
+                else if (gamemode == 5) {
+                    playerMove = MrSmart.chooseMove(gameBoard);
                 }
                 else {
                     System.out.println("Error: There is no computer player for this gamemode");

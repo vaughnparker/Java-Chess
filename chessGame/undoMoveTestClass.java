@@ -1,6 +1,6 @@
 public class undoMoveTestClass
 {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         char[][] testingPosition = {
             {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
             {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
@@ -26,5 +26,5 @@ public class undoMoveTestClass
             gameBoard.undoMove(moveToMake);
             System.out.println(gameBoard);
         }
-    }
+    }*/
 }

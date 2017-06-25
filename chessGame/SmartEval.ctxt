@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=boardToSearch
+comment0.target=int\ rating(BoardState)
+comment1.params=boardToSearch
+comment1.target=int\ rateMaterial(BoardState)
+comment1.text=public\ static\ int\ rateAttack()\ {\r\n\ \ \ \ \ \ \ \ int\ counter\=0;\r\n\ \ \ \ \ \ \ \ int\ tempPositionC\=AlphaBetaChess.kingPositionC;\r\n\ \ \ \ \ \ \ \ for\ (int\ i\=0;i<64;i++)\ {\r\n\ \ \ \ \ \ \ \ \ \ \ \ switch\ (AlphaBetaChess.chessBoard[i/8][i%8])\ {\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ case\ "P"\:\ {AlphaBetaChess.kingPositionC\=i;\ if\ (\!AlphaBetaChess.kingSafe())\ {counter-\=64;}}\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ break;\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ case\ "R"\:\ {AlphaBetaChess.kingPositionC\=i;\ if\ (\!AlphaBetaChess.kingSafe())\ {counter-\=500;}}\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ break;\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ case\ "K"\:\ {AlphaBetaChess.kingPositionC\=i;\ if\ (\!AlphaBetaChess.kingSafe())\ {counter-\=300;}}\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ break;\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ case\ "B"\:\ {AlphaBetaChess.kingPositionC\=i;\ if\ (\!AlphaBetaChess.kingSafe())\ {counter-\=300;}}\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ break;\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ case\ "Q"\:\ {AlphaBetaChess.kingPositionC\=i;\ if\ (\!AlphaBetaChess.kingSafe())\ {counter-\=900;}}\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ break;\r\n\ \ \ \ \ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ AlphaBetaChess.kingPositionC\=tempPositionC;\r\n\ \ \ \ \ \ \ \ if\ (\!AlphaBetaChess.kingSafe())\ {counter-\=200;}\r\n\ \ \ \ \ \ \ \ return\ counter/2;\r\n}
+comment2.params=boardToSearch\ depth\ material
+comment2.target=int\ rateMoveability(BoardState,\ int,\ int)
+comment3.params=boardToSearch\ material
+comment3.target=int\ ratePositional(BoardState,\ int)
+numComments=4

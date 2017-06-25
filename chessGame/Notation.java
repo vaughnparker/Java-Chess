@@ -14,6 +14,7 @@ public class Notation
 
     public static String convertCrazyToAlgebraic(BoardState boardToSearch, String crazyMove) {
         char[][] position = boardToSearch.getPosition();
+        boolean side = boardToSearch.getSide();
         String newMove = "";
 
         if (crazyMove.length() != 5) {
@@ -22,8 +23,28 @@ public class Notation
         }
         
         // if castling
-        if (crazyMove.charAt(0) == 'O') {
+        if (BoardState.determineTypeOfMove(crazyMove).equals("Castling")) {
             return crazyMove;
+        }
+        // else if promotion
+        else if (BoardState.determineTypeOfMove(crazyMove).equals("Promotion")) {
+            int promotionRank = (side ? 0 : 7);
+
+            int oldX = Character.getNumericValue(crazyMove.charAt(0));
+            int oldY = Character.getNumericValue(crazyMove.charAt(1));
+            int newX = Character.getNumericValue(crazyMove.charAt(2));
+            int newY = promotionRank;
+            
+            char promotedPiece = crazyMove.charAt(3);
+            char capturedPiece = crazyMove.charAt(4);
+
+            if (capturedPiece == ' ') {
+                newMove += "" + convertNumberToRank(newX) + (8 - newY) + "=" + promotedPiece + " ";
+            }
+            else {
+                newMove += "x" + convertNumberToRank(newX) + (8 - newY) + "=" + promotedPiece + " ";
+            }
+
         }
 
         // assuming standard move
@@ -33,14 +54,27 @@ public class Notation
         int newY = Character.getNumericValue(crazyMove.charAt(3));
         char capturedPiece = crazyMove.charAt(4);
 
-        if (position[oldY][oldX] == 'P' || position[oldY][oldX] == 'p') {
-            newMove += " " + convertNumberToRank(newX) + (8 - newY) + "  ";
+
+
+
+        // this thing needs to work, promotion AND captures are not accounted for
+        if (capturedPiece == ' ') {
+            if (position[oldY][oldX] == 'P' || position[oldY][oldX] == 'p') {
+                newMove += "" + convertNumberToRank(newX) + (8 - newY) + "   ";
+            }
+            else {
+                newMove += ("" + position[oldY][oldX]).toUpperCase() + convertNumberToRank(newX) + (8 - newY) + "  ";
+            }
         }
-        else if (capturedPiece == ' ') {
-            newMove += ("" + position[oldY][oldX]).toUpperCase() + convertNumberToRank(newX) + (8 - newY) + "  ";
-        }
+
         else {
-            newMove += ("" + position[oldY][oldX]).toUpperCase() + "x" + convertNumberToRank(newX) + (8 - newY) + " ";
+            if (position[oldY][oldX] == 'P' || position[oldY][oldX] == 'p') {
+                newMove += "" + convertNumberToRank(oldX) + "x" + convertNumberToRank(newX) + (8 - newY) + " ";
+            }
+            else {
+                newMove += ("" + position[oldY][oldX]).toUpperCase() + "x" + convertNumberToRank(newX) + (8 - newY) + " ";
+            }
+            
         }
 
         

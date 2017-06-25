@@ -385,7 +385,7 @@ public class MoveFinder
             //BoardState tempKingBoard = new BoardState(boardToSearch.getPosition(), boardToSearch.getSide());
             //this is a shallow copy, doesn't work!
 
-            char[][] tempKingPosition = new char[8][8];
+            /*char[][] tempKingPosition = new char[8][8];
 
             for (int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
@@ -393,21 +393,18 @@ public class MoveFinder
                 }
             }
 
-            //char[][] tempKingPosition = boardToSearch.getPosition().clone();
-
             BoardState tempKingBoard = new BoardState(tempKingPosition, boardToSearch.getSide());
-            //this one is a deep copy, let's see if this works
+            //this one is a deep copy, let's see if this works*/
 
 
             String tempMove = list.substring(i-5, i);
-            tempKingBoard.makeMove(tempMove);
-            
-            //System.out.println("WTF my guy gameBoard\n" + boardToSearch);
-            // this was for the shallow copy error
+            boardToSearch.makeMove(tempMove);
 
-            if (!tempKingBoard.isKingTakeable()) {
+            if (!boardToSearch.isKingTakeable()) {
                 shortenedList += tempMove;
             }
+
+            boardToSearch.undoMove(tempMove);
 
         }
 
